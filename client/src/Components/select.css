@@ -1,0 +1,42 @@
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.custom-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
+  cursor: pointer;
+} 
+.pdr  {
+  padding-right: 2rem;
+}
+.pdl  {
+  padding-left: 2rem;
+}
+.startcampaign {
+  font-weight: 700;
+}
+.selectoption {
+  width: 100%;
+}
+.mgr {
+  margin-right: 0.8rem;
+}
+
+.topmost {
+  position: relative;
+}
+
