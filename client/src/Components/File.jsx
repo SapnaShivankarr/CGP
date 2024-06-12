@@ -66,7 +66,7 @@ const UploadDataScreen = () => {
       if (userType.toLowerCase() === "manufacturer") {
         if (bomFile) {
           formData.append("file", bomFile);
-          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/bom/", formData, {
+          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/mfg/bom/", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -78,13 +78,15 @@ const UploadDataScreen = () => {
             setErrorMessage("");
             const filecookie = bomFile.name;
             document.cookie = `bomgcspath=gs://mfg_bom/${filecookie}; path=/`;
+            document.cookie = `fileUrl=${response.data.responseData.fileUrl}; path=/`;
+            document.cookie = `fileName=${response.data.responseData.fileName}; path=/`;
             document.cookie = "eventgcspath=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
           } else {
             throw new Error("Failed to upload BOM file");
           }
         } else if (eventFile) {
           formData.append("file", eventFile);
-          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/event/", formData, {
+          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/mfg/event/", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -96,6 +98,8 @@ const UploadDataScreen = () => {
             setErrorMessage("");
             const filecookie = eventFile.name;
             document.cookie = `eventgcspath=gs://mfg_event/${filecookie}; path=/`;
+            document.cookie = `fileUrl=${response.data.responseData.fileUrl}; path=/`;
+            document.cookie = `fileName=${response.data.responseData.fileName}; path=/`;
             document.cookie = "bomgcspath=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
           } else {
             throw new Error("Failed to upload event file");
@@ -106,7 +110,7 @@ const UploadDataScreen = () => {
       if (userType.toLowerCase() === "retailer") {
         if (eventFile) {
           formData.append("file", eventFile);
-          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/", formData, {
+          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/retailer/event/", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -118,6 +122,8 @@ const UploadDataScreen = () => {
             setErrorMessage("");
             const filecookie = eventFile.name;
             document.cookie = `eventgcspath=gs://reatiler_event/${filecookie}; path=/`;
+            document.cookie = `fileUrl=${response.data.responseData.fileUrl}; path=/`;
+            document.cookie = `fileName=${response.data.responseData.fileName}; path=/`;
             document.cookie = "bomgcspath=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
           } else {
             throw new Error("Failed to upload PDF file");

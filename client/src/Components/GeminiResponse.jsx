@@ -106,6 +106,44 @@ const GeminiResponse = () => {
     setFalseCount(0);
   };
 
+  const handleSuccess = async (e) => {
+    e.preventDefault();
+    const filename = document.cookie
+      .split(";")
+      .find((cookie) => cookie.trim().startsWith("fileName="))
+      .split("=")[1];
+    console.log(filename);
+    const manufacturereventtype =
+      document.cookie
+        .split(";")
+        .find((cookie) => cookie.trim().startsWith("fileUrl="))
+        .split("=")[1]
+        .includes("mfg-bom") === true;
+    console.log(manufacturereventtype);
+    try {
+      console.log(userType);
+      if (userType.toLowerCase() === "retailer") {
+        const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/retailer/event/?filename=${encodeURIComponent(filename)}`);
+        if (response.status === 200) {
+          navigate("/share");
+        }
+      } else if (manufacturereventtype) {
+        const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/mfg/bom/?filename=${encodeURIComponent(filename)}`);
+        if (response.status === 200) {
+          navigate("/share");
+        }
+      } else {
+        const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/mfg/event/?filename=${encodeURIComponent(filename)}`);
+        if (response.status === 200) {
+          navigate("/share");
+        }
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Failed to upload file.");
+    }
+  };
+
   return (
     <div className="bgcolor">
       <Top />
@@ -192,7 +230,7 @@ const GeminiResponse = () => {
             </div>
             <div className="page-btn">
               {falsecount === 0 ? (
-                <button className="btn fractals-btn btn-lg w-100 mb-3" onClick={() => navigate("/share")}>
+                <button className="btn fractals-btn btn-lg w-100 mb-3" onClick={handleSuccess}>
                   Next
                 </button>
               ) : (

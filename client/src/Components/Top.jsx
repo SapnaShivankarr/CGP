@@ -29,6 +29,9 @@ function Top() {
     document.cookie = "active=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "eventgcspath=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "bomgcspath=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "fileUrl=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "fileName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "CampaignId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     sessionStorage.removeItem("uploadedImageData");
     navigate("/");
   };

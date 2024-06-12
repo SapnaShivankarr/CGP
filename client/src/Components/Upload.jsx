@@ -13,16 +13,14 @@ function Upload() {
   }, []);
 
   const fetchUserName = async () => {
-    const username = document.cookie
+    const userId = document.cookie
       .split(";")
-      .find((cookie) => cookie.trim().startsWith("username="))
+      .find((cookie) => cookie.trim().startsWith("CampaignId="))
       .split("=")[1];
     try {
-      const response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/all/${username}`);
+      const response = await axios.get(`http://localhost:9001/campaign-file-service/api/v1/campaign/${userId}`);
       if (response.status === 200) {
-        const userCampaigns = response.data.responseData.filter((option) => option.assignedTo === username);
-        const lastCampaign = userCampaigns[userCampaigns.length - 1];
-        setUserName(lastCampaign);
+        setUserName(response.data.responseData);
       }
     } catch (error) {
       console.error("Error fetching user name:", error);
@@ -46,14 +44,14 @@ function Upload() {
           <div className="row mt-4">
             <div className="detailsinvite col-4">
               <div style={{ width: "250px", height: "auto" }}>
-                <img style={{ width: "100%", height: "100%" }} src={`https://img.freepik.com/free-photo/tomato-saup-with-basil-bowl_114579-11606.jpg?t=st=1714728954~exp=1714732554~hmac=ed7fec1f51326b85d57fdfd87e91d11497cb5f70456dc5abd008c2ed50b1aa11&w=200`} className="invite" alt="Campaign Invitation" />
+                <img style={{ width: "100%", height: "100%" }} src={userName?.imageData ? `data:image/jpeg;base64,${userName.imageData}` : ""} className="invite" alt="Campaign Invitation" />
               </div>
             </div>
 
             <div className="details col-8">
               <h5 className="mb-2">{userName.productName || "Loading..."}</h5>
               <p className="my-1">
-                <b>GTIN ID - </b> {userName.id || "Loading..."}
+                <b>Camapign ID - </b> {userName.id || "Loading..."}
               </p>
               <p className="detailpara">
                 <p className="mt-2">

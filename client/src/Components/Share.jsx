@@ -12,8 +12,19 @@ const Share = () => {
   ]);
   const [alcal, setAlCal] = useState(true);
   const [shmarketplace, setShMarketPlace] = useState(true);
+  const [CampaignInfo, setCampaign] = useState("");
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const getId = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("CampaignId="));
+      const getfinalId = getId ? getId.split("=")[1] : undefined;
+
+      const response = await axios.get(`http://localhost:9001/campaign-file-service/api/v1/campaign/${getfinalId}`);
+
+      setCampaign(response.data.responseData);
+    };
+    fetchData();
+  }, []);
 
   const handleCheckboxChange = (id) => {
     setCampaignRequestCheckboxes((prevCheckboxes) => prevCheckboxes.map((checkbox) => (checkbox.id === id ? { ...checkbox, checked: !checkbox.checked } : checkbox)));
@@ -40,12 +51,13 @@ const Share = () => {
             <div className="col-md-4">
               <div className="bg-white p-4 mb-3 rounded text-left">
                 <div className="mt-4 mb-4">
-                  <img src={`https://storage.cloud.google.com/cpg-upload-bucket//BUCKET/RETAILER//AholdDelhaize/tomato%20soup%201.jpg?authuser=1`} alt="Manufacturer Logo" />
+                  <img src={`data:image/jpg;base64,${CampaignInfo.imageData}`} alt="Manufacturer Logo" />
                   <p className="mt-2">
-                    <b>Campaign ID:</b> 10235900
+                    <b>Campaign ID:</b> {CampaignInfo.id}
                   </p>
                   <p className="mt-2">
-                    <b>Product:</b> Tomato Ketchup
+                    <b>Product:</b>
+                    {CampaignInfo.productName}
                   </p>
                   <p>Results</p>
                   <p className="mt-2">

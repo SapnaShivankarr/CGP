@@ -18,11 +18,15 @@ const ActionsScreen = () => {
       .find((cookie) => cookie.trim().startsWith("username="))
       .split("=")[1];
     try {
-      const response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/all/${username}`);
+      const response = await axios.get(`http://localhost:9001/campaign-file-service/api/v1/campaign/all/${username}`);
       if (response.status === 200) {
         const userCampaigns = response.data.responseData.filter((option) => option.assignedTo === username);
-        const lastCampaign = userCampaigns[userCampaigns.length - 1];
+        console.log(username);
+        console.log(userCampaigns);
+        const lastCampaign = userCampaigns[0];
+        console.log(lastCampaign);
         setUserName(lastCampaign);
+        document.cookie = `CampaignId=${userCampaigns[0].id}; path=/`;
       }
     } catch (error) {
       console.error("Error fetching user name:", error);

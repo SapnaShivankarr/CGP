@@ -23,6 +23,9 @@ const Select = () => {
   const [baseuniterr, setBaseUniterr] = useState(false);
   const [caseuniterr, setCaseUniterr] = useState(false);
   const [palletuniterr, setPalletUniterr] = useState(false);
+  const [isUserPresent, setUserPresent] = useState(false);
+  const [userData, setUserData] = useState(true);
+  const [campaignString, setCampaignString] = useState("");
 
   const [campaignoptions, setCampaignOptions] = useState([
     { id: 1, name: "Product Carbon Footprint", checked: true },
@@ -68,11 +71,66 @@ const Select = () => {
 
   useEffect(() => {
     // Simulate fetching manufacturer data and image
-  });
+    const getId = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("CampaignId="));
+
+    const getIdforsearch = getId ? getId.split("=")[1] : undefined;
+
+    const fetchDate = async () => {
+      try {
+        let response;
+        if (getIdforsearch) {
+          response = await axios.get(`http://localhost:9001/campaign-file-service/api/v1/campaign/${getIdforsearch}`);
+
+          if (response.status === 200) {
+            setUserPresent(true);
+            console.log(response.data.responseData);
+            setUserData(response.data.responseData);
+            setCampaignString(response.data.responseData.campaignTypes);
+            setImagePreviewUrl(`data:image/jpg;base64,${response.data.responseData.imageData}`);
+            getCampaign(response.data.responseData.campaignTypes);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchDate();
+  }, []);
+
+  const getCampaign = (campaignString) => {
+    const datacampaign = campaignString.split(", ");
+    console.log(datacampaign);
+
+    const newCheckboxes = checkboxes.map((option) => {
+      if (datacampaign.includes(option.name)) {
+        return { ...option, checked: true };
+      } else {
+        return { ...option, checked: false };
+      }
+    });
+
+    setCheckboxes(newCheckboxes);
+    const newCampaignOptions = campaignoptions.map((op) => {
+      const matchingCheckbox = newCheckboxes.find((opr) => opr.id === op.id);
+      if (matchingCheckbox) {
+        return { ...op, checked: matchingCheckbox.checked };
+      }
+      return op;
+    });
+
+    setCampaignOptions(newCampaignOptions);
+  };
 
   const handleSelectFrameworks = (event) => {
     const x = event.target.value;
     setFrameworkoption(event.target.value);
+    if (isUserPresent) {
+      setUserData({
+        ...userData,
+        calculationFramework: event.target.value,
+      });
+    }
     console.log(x);
   };
 
@@ -105,24 +163,48 @@ const Select = () => {
   const handleSelectGPC = (event) => {
     const z = event.target.value;
     setGPCOption(event.target.value);
+    if (isUserPresent) {
+      setUserData({
+        ...userData,
+        globalProductClassification: event.target.value,
+      });
+    }
     console.log(z);
   };
 
   const handleSelectSupplier = (event) => {
     const z = event.target.value;
     setSupplierOption(event.target.value);
+    if (isUserPresent) {
+      setUserData({
+        ...userData,
+        productSupplier: event.target.value,
+      });
+    }
     console.log(z);
   };
 
   const handleSelectLCATerm = (event) => {
     const z = event.target.value;
     setLcaOption(event.target.value);
+    if (isUserPresent) {
+      setUserData({
+        ...userData,
+        lcaTerm: event.target.value,
+      });
+    }
     console.log(z);
   };
 
   const handleSelectLocation = (event) => {
     const z = event.target.value;
     setDAPLocationOptions(event.target.value);
+    if (isUserPresent) {
+      setUserData({
+        ...userData,
+        location: event.target.value,
+      });
+    }
     console.log(z);
   };
   const handleCheckboxChange = (id) => {
@@ -228,6 +310,7 @@ const Select = () => {
 
       if (response.status === 200) {
         console.log(response);
+        document.cookie = `CampaignId=${response.data.responseData.id}; path=/`;
         const imageBase64 = encodeURIComponent(response.data.responseData.imageData);
         console.log(imageBase64);
         sessionStorage.setItem("uploadedImageData", imageBase64);
@@ -250,12 +333,34 @@ const Select = () => {
     reader.readAsDataURL(file);
   };
 
+  const completeEdit = async (event) => {
+    event.preventDefault();
+    const selectedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked);
+    const strimp = selectedCheckboxes.map((option) => option.name).join(", ");
+    const updatedUserData = { ...userData, campaignTypes: strimp };
+
+    try {
+      console.log(updatedUserData);
+      const response = await axios.put("http://localhost:9001/campaign-file-service/api/v1/campaign/", updatedUserData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        navigate("/upload");
+      }
+    } catch (error) {
+      console.error("Error updating campaign:", error);
+    }
+  };
+
   return (
     <div className="bgcolor">
       <Top />
       <div className="d-flex justify-content-center align-items-center">
         <div className="shadow-lg secondary-color ">
-          <form onSubmit={handleNext}>
+          <form onSubmit={isUserPresent ? completeEdit : handleNext}>
             <div className="d-block mt-4 topmost">
               <div className="row">
                 <div className="col-md-6 pdr">
@@ -287,7 +392,19 @@ const Select = () => {
                         <p className="mb-2">Each / base unit*</p>
                       </div>
                       <div className="col-md-8 pt">
-                        <input type="number" className="form-control mb-2" placeholder="14-digit GTIN" onChange={(e) => setBaseUnitGTIN(e.target.value)} required />
+                        <input
+                          type="number"
+                          className="form-control mb-2"
+                          placeholder="14-digit GTIN"
+                          onChange={(e) => {
+                            setBaseUnitGTIN(e.target.value);
+                            if (isUserPresent) {
+                              setUserData({ ...userData, productBaseUnitGTIN: e.target.value });
+                            }
+                          }}
+                          required
+                          value={isUserPresent ? userData.productBaseUnitGTIN : baseunitGTIN}
+                        />
                       </div>
                     </div>
                     {baseuniterr && <p className="ml-2 warnrd">Your Base Unit GTINID should be of 14 digits</p>}
@@ -297,7 +414,19 @@ const Select = () => {
                         <p className="mb-2">Case*</p>
                       </div>
                       <div className="col-md-8 pt">
-                        <input type="number" className="form-control mb-2" placeholder="14-digit GTIN" onChange={(e) => setCaseUnitGTIN(e.target.value)} required />
+                        <input
+                          type="number"
+                          className="form-control mb-2"
+                          placeholder="14-digit GTIN"
+                          onChange={(e) => {
+                            setCaseUnitGTIN(e.target.value);
+                            if (isUserPresent) {
+                              setUserData({ ...userData, productCaseGTIN: e.target.value });
+                            }
+                          }}
+                          required
+                          value={isUserPresent ? userData.productCaseGTIN : caseunitGTIN}
+                        />
                       </div>
                     </div>
                     {caseuniterr && <p className="ml-2 warnrd">Your Case Unit GTINID should be of 14 digits</p>}
@@ -307,7 +436,18 @@ const Select = () => {
                         <p className="mb-2">Pallet</p>
                       </div>
                       <div className="col-md-8 pt">
-                        <input type="numbert" className="form-control mb-2" placeholder="14-digit GTIN" onChange={(e) => setPalletUnitGTIN(e.target.value)} />
+                        <input
+                          type="numbert"
+                          className="form-control mb-2"
+                          placeholder="14-digit GTIN"
+                          onChange={(e) => {
+                            setPalletUnitGTIN(e.target.value);
+                            if (isUserPresent) {
+                              setUserData({ ...userData, productPalletGTIN: e.target.value });
+                            }
+                          }}
+                          value={isUserPresent ? userData.productPalletGTIN : palletunitGTIN}
+                        />
                       </div>
                     </div>
                     {palletuniterr && <p className="ml-2 warnrd">Your Pallet Unit GTINID should be of 14 digits</p>}
@@ -315,7 +455,19 @@ const Select = () => {
                     <div className="mt-2">
                       <div>Product Name*</div>
                       <div>
-                        <input type="text" className="form-control pname" placeholder="Enter Product Name" onChange={(e) => setProductNameCampaign(e.target.value)} required />
+                        <input
+                          type="text"
+                          className="form-control pname"
+                          placeholder="Enter Product Name"
+                          onChange={(e) => {
+                            setProductNameCampaign(e.target.value);
+                            if (isUserPresent) {
+                              setUserData({ ...userData, productName: e.target.value });
+                            }
+                          }}
+                          required
+                          value={isUserPresent ? userData.productName : productNameCampaign}
+                        />
                       </div>
                     </div>
 
@@ -332,7 +484,7 @@ const Select = () => {
                 </select> */}
 
                     <p className="mb-2 mt-2">Select Global Product Classification*</p>
-                    <select value={gpcoption} onChange={handleSelectGPC} className="form-select selectoption" required>
+                    <select value={isUserPresent ? userData.globalProductClassification : gpcoption} onChange={handleSelectGPC} className="form-select selectoption" required>
                       <option value="" selected hidden>
                         GPC
                       </option>
@@ -344,7 +496,7 @@ const Select = () => {
                     </select>
 
                     <p className="mb-2 mt-2">Select Supplier*</p>
-                    <select value={supplieroption} onChange={handleSelectSupplier} className="form-select selectoption" required>
+                    <select value={isUserPresent ? userData.productSupplier : supplieroption} onChange={handleSelectSupplier} className="form-select selectoption" required>
                       <option value="" selected hidden>
                         GLN + Supplier Name
                       </option>
@@ -356,7 +508,7 @@ const Select = () => {
                     </select>
 
                     <p className="mb-2 mt-2">Select LCA Term*</p>
-                    <select value={lcaoption} onChange={handleSelectLCATerm} className="form-select selectoption" required>
+                    <select value={isUserPresent ? userData.lcaTerm : lcaoption} onChange={handleSelectLCATerm} className="form-select selectoption" required>
                       <option value="" selected hidden>
                         LCA Term
                       </option>
@@ -368,7 +520,7 @@ const Select = () => {
                     </select>
 
                     <p className="mb-2 mt-2">Locations*</p>
-                    <select value={daplocationoption} onChange={handleSelectLocation} className="form-select selectoption" required>
+                    <select value={isUserPresent ? userData.location : daplocationoption} onChange={handleSelectLocation} className="form-select selectoption" required>
                       <option value="" selected hidden>
                         DAP Locations
                       </option>
@@ -381,7 +533,7 @@ const Select = () => {
 
                     <div className="mt-3">
                       <p className="mb-2">Calculation Frameworks*</p>
-                      <select value={frameworkoption} onChange={handleSelectFrameworks} className="form-select selectoption mb-4" required>
+                      <select value={isUserPresent ? userData.calculationFramework : frameworkoption} onChange={handleSelectFrameworks} className="form-select selectoption mb-4" required>
                         <option value="" selected hidden>
                           Select an Option
                         </option>
@@ -435,7 +587,7 @@ const Select = () => {
 
                     <div className="mt-4">
                       <p className="mb-2">Choose Auditor*</p>
-                      <select className="form-select pname" required>
+                      <select className="form-select pname" value={isUserPresent ? userData.auditor : "Impact Buying"} required>
                         <option value="" selected hidden>
                           Select an Option
                         </option>
@@ -450,7 +602,7 @@ const Select = () => {
                 </div>
               </div>
               <div className="page-btn">
-                <input type="submit" name="submit" value="Next" className="btn fractals-btn btn-lg w-100 mb-3" />
+                <input type="submit" name="submit" value={isUserPresent ? "Save & Next" : "Next"} className="btn fractals-btn btn-lg w-100 mb-3" />
               </div>
             </div>
           </form>
