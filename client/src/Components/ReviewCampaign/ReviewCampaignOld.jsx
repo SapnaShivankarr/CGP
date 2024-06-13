@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Top from './Top';
+import Header from '../Header/Header';
 import { useNavigate } from 'react-router-dom';
 
 const ReviewsHeader = () => {
@@ -18,7 +18,7 @@ const ReviewsHeader = () => {
 
   return (
     <div>
-      <Top/>
+      <Header/>
       <div className="d-block mt-4 custom-container">
         
         <div className="row">

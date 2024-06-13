@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import Login from "./Components/Login";
-import Select from "./Components/Select";
-import Share from "./Components/Share";
-import Signup from "./Components/Signup";
-import Upload from "./Components/Upload";
-import Campaigninvitation from "./Components/Campaigninvitation";
-import ReviewsHeader from "./Components/ReviewHeader";
-import File from "./Components/File";
-import Dashboard from "./Components/Dashboard";
-import Suppliers from "./Components/Suppliers";
-import Top from "./Components/Top";
-import Audit from "./Components/Audit";
-import GeminiResponse from "./Components/GeminiResponse";
-import "./Components/style.css";
+import Login from "./Components/Login/Login";
+import LaunchCampaign from "./Components/LaunchCampaign/LaunchCampaign";
+import Share from "./Components/ShareCarbonFootprint/ShareCarbonFootprint";
+import Signup from "./Components/Login/Signup";
+import ReviewCampaign from "./Components/ReviewCampaign/ReviewCampaign";
+import Campaigninvitation from "./Components/CampaignInvitation/Campaigninvitation";
+import Upload from "./Components/Upload/Upload";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import Header from "./Components/Header/Header";
+import Audit from "./Components/Audit/Audit";
+import GeminiResponse from "./Components/Upload/GeminiResponse";
+import "../src/CommonStyle/style.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,23 +30,21 @@ function App() {
   }, [navigate, location.pathname]);
 
   return (
-    <div className="App vh-100" style={{backgroundColor:'#ecf1fb'}}>
+    <div className="App">
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         {isAuthenticated && (
           <>
-            <Route path="/select" element={<Select />} />
-            <Route path="/review" element={<Upload />} />
+            <Route path="/campaign" element={<LaunchCampaign />} />
+            <Route path="/upload" element={<Upload />} />
             <Route path="/share" element={<Share />} />
-            <Route path="/top" element={<Top />} />
-            <Route path="/invite" element={<Campaigninvitation />} />
-            <Route path="/upload" element={<File />} />
-            <Route path="/confirm" element={<ReviewsHeader />} />
+            <Route path="/header" element={<Header />} />
+            <Route path="/invitation" element={<Campaigninvitation />} />
+            <Route path="/review" element={<ReviewCampaign />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/audit" element={<Audit />} />
-            <Route path="/gemini" element={<GeminiResponse />} />
+            <Route path="/response" element={<GeminiResponse />} />
           </>
         )}
       </Routes>

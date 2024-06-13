@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import { NavLink, useNavigate } from "react-router-dom";
-import Top from "./Top";
+import Header from "../Header/Header";
 
 const DashBoard = () => {
   const navigate = useNavigate();
@@ -11,12 +11,11 @@ const DashBoard = () => {
 
   return (
     <div className="dashboard-container">
-      <Top/>
+      <Header/>
       <div className="container-fluid mt-4 dashboard-bg">
         <div className="d-inline-block heading side-nav">
           <h4>Dashboard</h4>
-          <br />
-          <NavLink to="/suppliers">Suppliers</NavLink>
+
           <br />
           <NavLink>Campaigns</NavLink>
           <br />

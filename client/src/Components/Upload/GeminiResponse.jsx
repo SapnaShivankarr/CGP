@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Top from "./Top";
+import Header from "../Header/Header";
 
 const GeminiResponse = () => {
   const navigate = useNavigate();
@@ -145,104 +143,60 @@ const GeminiResponse = () => {
   };
 
   return (
-    <div className="bgcolor">
-      <Top />
-      <div className="d-flex justify-content-center align-items-center">
-        <div className="shadow-lg secondary-color" style={{ position: "relative" }}>
-          <div className="row">
-            <div className="col-12 custom-calculated-results" style={{ marginBottom: "4rem" }}>
-              <div className="gemini-container" style={{ border: "12px double gray", borderRadius: "10px", padding: "20px" }}>
-                <div className="gemini-header">
-                  <span className="gemini-logo">
-                    <h4>Gemini</h4>
-                  </span>
-                </div>
-                <div className="gemini-content">
-                  {falsecount === 0 ? (
-                    <>
-                      {Object.keys(presentdata).length !== 0 ? (
-                        <>
-                          <p>
-                            <b>Your Data looks good. Click on Next</b>
-                          </p>
-                          <ul>
-                            {Object.keys(presentdata).map((key) => (
-                              <li key={key}>{key}</li>
-                            ))}
-                          </ul>
-                        </>
-                      ) : (
-                        <p>Please wait</p>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <p>
-                        <b>Sorry, your Data Uploaded does not contain the below fields. Please re-upload your file.</b>
-                      </p>
-                      <ul>
-                        {Object.keys(finaldata).map((key) => (
-                          <li key={key}>{key}</li>
-                        ))}
-                      </ul>
-                      <p>
-                        <b>Below is the Data Available in the document:</b>
-                      </p>
-                      <ul>
-                        {Object.keys(presentdata).map((key) => (
-                          <li key={key}>{key}</li>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-                </div>
-
-                {/* <div className="gemini-reply">
-                  <div className="input-container" style={{ visibility: "hidden" }}>
-                    <input
-                      type="text"
-                      placeholder="Type your message..."
-                      onKeyPress={(event) => {
-                        if (event.key === "Enter") {
-                          handleUserMessage(event.target.value);
-                          event.target.value = "";
-                        }
-                      }}
-                    />
-                    <div className="upload-container">
-                      <label htmlFor="file-upload" className="upload-button">
-                        <FontAwesomeIcon icon={faFileUpload} />
-                      </label>
-                      <input
-                        type="file"
-                        accept=".xml, .xls, .xlsx"
-                        id="file-upload"
-                        style={{ display: "none" }}
-                        onChange={(event) => {
-                          const file = event.target.files[0];
-                          handleUserMessage({ type: "file", file });
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div> */}
-              </div>
-            </div>
-            <div className="page-btn">
-              {falsecount === 0 ? (
-                <button className="btn fractals-btn btn-lg w-100 mb-3" onClick={handleSuccess}>
-                  Next
-                </button>
-              ) : (
-                <button className="btn fractals-btn btn-lg w-100 mb-3" onClick={handleOnClick}>
-                  Try Again
-                </button>
-              )}
-            </div>
+    <>
+    <Header />
+    <div className="container page-container">
+      <div className="col-12 custom-calculated-results" style={{ marginBottom: "4rem" }}>
+        <div className="gemini-container" style={{ border: "12px double gray", borderRadius: "10px", padding: "20px" }}>
+          <div className="gemini-header">
+            <span className="gemini-logo">
+              <h4>Gemini</h4>
+            </span>
+          </div>
+          <div className="gemini-content">
+            {falsecount === 0 ? (
+              <>
+                {Object.keys(presentdata).length !== 0 ? (
+                  <>
+                    <p><b>Your Data looks good. Click on Next</b></p>
+                    <ul>
+                      {Object.keys(presentdata).map((key) => (
+                        <li key={key}>{key}</li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <p>Please wait</p>
+                )}
+              </>
+            ) : (
+              <>
+                <p><b>Sorry, your Data Uploaded does not contain the below fields. Please re-upload your file.</b></p>
+                <ul>
+                  {Object.keys(finaldata).map((key) => (
+                    <li key={key}>{key}</li>
+                  ))}
+                </ul>
+                <p><b>Below is the Data Available in the document:</b></p>
+                <ul>
+                  {Object.keys(presentdata).map((key) => (
+                    <li key={key}>{key}</li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         </div>
       </div>
+      <div>
+        {falsecount === 0 ? (
+          <button className="page-btn" onClick={handleSuccess}>Next</button>
+        ) : (
+          <button className="page-btn" onClick={handleOnClick}>Try Again</button>
+        )}
+      </div>
     </div>
+    </>
   );
 };
 

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-function Top() {
+function Header() {
   const [loggedInUser, setLoggedInUser] = useState("");
   const [loggedInRole, setLoggedRole] = useState("");
   const navigate = useNavigate();
@@ -37,21 +35,14 @@ function Top() {
   };
 
   return (
-    <div className="header row">
-      <div className="col-2 logo">
-        <h4>Fractals</h4>
-      </div>
-      <div className="col-4"></div>
-      <div className="col-6 text-end">
-        <span style={{ fontWeight: 600 }}>{loggedInUser}</span>
-        {/* <span style={{ fontWeight: 600, fontSize: "16px", marginLeft: "2rem", color: "#0a6fcd" }}>{loggedInRole}</span> */}
-        <button style={{ fontWeight: 600, fontSize: "16px", marginLeft: "2rem" }} onClick={handleLogout} className="btn btn-lg">
-          <FontAwesomeIcon icon={faSignOutAlt} />
-          Logout
-        </button>
-      </div>
+    <header class="header">
+    <div class="app-name">Fractals</div>
+    <div class="user-controls">
+        <div class="username">{loggedInUser}</div>
+        <button class="logout-button" onClick={handleLogout}>Logout</button>
     </div>
+</header>
   );
 }
 
-export default Top;
+export default Header;

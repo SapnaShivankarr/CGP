@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import Top from "./Top";
+import Header from "../Header/Header";
 
 const UploadDataScreen = () => {
   const navigate = useNavigate();
@@ -132,7 +132,7 @@ const UploadDataScreen = () => {
       }
 
       window.alert("Files uploaded successfully!");
-      navigate("/gemini");
+      navigate("/response");
     } catch (error) {
       console.error("Error uploading files:", error);
       setErrorMessage("Error uploading files. Please try again.");
@@ -172,16 +172,16 @@ const UploadDataScreen = () => {
   );
 
   return (
-    <div className="bgcolor vh-100">
-      <Top />
-      <div className="d-flex justify-content-center align-items-center">
-        <div className="shadow-lg secondary-color ">
-          <div className="row">
-            <div className="col-md-12">
-              <h4>Upload data to your company vault</h4>
-              <p>Data types</p>
-            </div>
+    <>
+      <Header />
+      <div className="container page-container">
+        <div className="row">
+        <div className="col-md-8">
+          <div className="col-md-12">
+            <h4>Upload data to your company vault</h4>
+            <p>Data types</p>
           </div>
+
 
           <div className="row below-section">
             <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${RetailerUser ? "disable-btn-border" : "btn-border"}`}>
@@ -189,10 +189,11 @@ const UploadDataScreen = () => {
                 <label className="file-label">
                   Distributed Bill of Materials (BOM)
                   <input type="file" accept=".xml" onChange={(e) => setBomFile(e.target.files[0])} style={{ display: "none" }} disabled={RetailerUser} />
-                  {RetailerUser ? "BOM File Upload disabled for Retailers" : ""}
+                  {RetailerUser && <span>BOM File Upload disabled for Retailers</span>}
                 </label>
               </div>
             </div>
+
             <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
               <div className="box">
                 <label className="file-label">
@@ -201,6 +202,7 @@ const UploadDataScreen = () => {
                 </label>
               </div>
             </div>
+
             <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
               <div className="box">
                 <label className="file-label">
@@ -211,29 +213,31 @@ const UploadDataScreen = () => {
             </div>
           </div>
 
-          <div className="row">
+          <div className="row my-4">
             <div className="col-md-12">
-              <div>{displayFileName(bomFile, "bom")}</div>
-              <div>{displayFileName(eventFile, "event")}</div>
-              <div>{displayFileName(pdfFile, "pdf")}</div>
+              {displayFileName(bomFile, "bom")}
+              {displayFileName(eventFile, "event")}
+              {displayFileName(pdfFile, "pdf")}
             </div>
           </div>
 
           <div className="row my-4">
-            <div className="col-md-12">
-              <button className="btn fractals-btn btn-lg w-100 mb-3" onClick={handleUpload}>
+            <div className="col-md-12 page-btn">
+              <button className="btn me-2" onClick={handleUpload}>
                 Upload
               </button>
-              <iframe src="https://chatui-k5atvf3ecq-ez.a.run.app/" title="Chatbot" width="100%" height="400px"></iframe>
-
-              <button className="btn fractals-btn btn-lg w-20 mb-3 mt-4" style={{ color: "black", backgroundColor: "white" }} onClick={() => navigate(-1)}>
+              <button className="btn btn-secondary mt-2" onClick={() => navigate(-1)}>
                 Back
               </button>
             </div>
           </div>
         </div>
+        <div className="col-md-4">
+          <iframe src="https://chatui-k5atvf3ecq-ez.a.run.app/" title="Chatbot" width="100%" height="400px"></iframe>
+        </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

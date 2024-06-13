@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import "./select.css";
+import "./LaunchCampaign.css";
 import { useNavigate } from "react-router-dom";
-import Top from "./Top";
+import Header from "../Header/Header";
 
-const Select = () => {
+const LaunchCampaign = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState("");
   // const [selectMaterial, setSelectMaterial] = useState("");
@@ -321,7 +321,7 @@ const Select = () => {
     }
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
 
@@ -356,260 +356,256 @@ const Select = () => {
   };
 
   return (
-    <div className="bgcolor">
-      <Top />
-      <div className="d-flex justify-content-center align-items-center">
-        <div className="shadow-lg secondary-color ">
-          <form onSubmit={isUserPresent ? completeEdit : handleNext}>
-            <div className="d-block mt-4 topmost">
-              <div className="row">
-                <div className="col-md-6 pdr">
-                  <div className="d-flex flex-column  justify-content-center">
-                    <div className="adjust">
-                      <span>Define your new data Campaign</span>
-                      <h4 className="mb-2 mt-2 startcampaign">What campaign would you like to start?</h4>
-                    </div>
-                    <p className="mb-2 mt-4">Select Campaign*</p>
-                    <div className="custom-dropdown">
-                      <button className="form-select mb-1 selectoption" style={{ textAlign: "left" }} type="button">
-                        {selectedOption || "Product Carbon Footprint"}
-                      </button>
-                      <div className="dropdown-content">
-                        {campaignoptions.map((option) => (
-                          <div key={option.id} className="dropdown-item">
-                            <input className="form-check-input mgr" type="checkbox" checked={option.checked} onChange={() => handleCheckboxChange(option.id)} id={`checkbox-${option.id}`} />
-                            <label htmlFor={`checkbox-${option.id}`} className={option.checked ? "optionbg" : ""}>
-                              {option.name}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <p className="mb-2 mt-4">Product ID(Global Trade Item Number-GTIN)</p>
-
-                    <div className="row mt-2">
-                      <div className="col-md-4">
-                        <p className="mb-2">Each / base unit*</p>
-                      </div>
-                      <div className="col-md-8 pt">
-                        <input
-                          type="number"
-                          className="form-control mb-2"
-                          placeholder="14-digit GTIN"
-                          onChange={(e) => {
-                            setBaseUnitGTIN(e.target.value);
-                            if (isUserPresent) {
-                              setUserData({ ...userData, productBaseUnitGTIN: e.target.value });
-                            }
-                          }}
-                          required
-                          value={isUserPresent ? userData.productBaseUnitGTIN : baseunitGTIN}
-                        />
-                      </div>
-                    </div>
-                    {baseuniterr && <p className="ml-2 warnrd">Your Base Unit GTINID should be of 14 digits</p>}
-
-                    <div className="row">
-                      <div className="col-md-4">
-                        <p className="mb-2">Case*</p>
-                      </div>
-                      <div className="col-md-8 pt">
-                        <input
-                          type="number"
-                          className="form-control mb-2"
-                          placeholder="14-digit GTIN"
-                          onChange={(e) => {
-                            setCaseUnitGTIN(e.target.value);
-                            if (isUserPresent) {
-                              setUserData({ ...userData, productCaseGTIN: e.target.value });
-                            }
-                          }}
-                          required
-                          value={isUserPresent ? userData.productCaseGTIN : caseunitGTIN}
-                        />
-                      </div>
-                    </div>
-                    {caseuniterr && <p className="ml-2 warnrd">Your Case Unit GTINID should be of 14 digits</p>}
-
-                    <div className="row">
-                      <div className="col-md-4">
-                        <p className="mb-2">Pallet</p>
-                      </div>
-                      <div className="col-md-8 pt">
-                        <input
-                          type="numbert"
-                          className="form-control mb-2"
-                          placeholder="14-digit GTIN"
-                          onChange={(e) => {
-                            setPalletUnitGTIN(e.target.value);
-                            if (isUserPresent) {
-                              setUserData({ ...userData, productPalletGTIN: e.target.value });
-                            }
-                          }}
-                          value={isUserPresent ? userData.productPalletGTIN : palletunitGTIN}
-                        />
-                      </div>
-                    </div>
-                    {palletuniterr && <p className="ml-2 warnrd">Your Pallet Unit GTINID should be of 14 digits</p>}
-
-                    <div className="mt-2">
-                      <div>Product Name*</div>
-                      <div>
-                        <input
-                          type="text"
-                          className="form-control pname"
-                          placeholder="Enter Product Name"
-                          onChange={(e) => {
-                            setProductNameCampaign(e.target.value);
-                            if (isUserPresent) {
-                              setUserData({ ...userData, productName: e.target.value });
-                            }
-                          }}
-                          required
-                          value={isUserPresent ? userData.productName : productNameCampaign}
-                        />
-                      </div>
-                    </div>
-
-                    {/* <p className="mb-2 mt-2">Choose Product or Material</p>
-                <select value={selectMaterial} onChange={handleSelectMaterial} className="form-control" style={{ fontSize: "14px", maxWidth: "400px", color: "black" }} required>
-                  <option value="" selected hidden>
-                    Select an Option
-                  </option>
-                  {materialoptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select> */}
-
-                    <p className="mb-2 mt-2">Select Global Product Classification*</p>
-                    <select value={isUserPresent ? userData.globalProductClassification : gpcoption} onChange={handleSelectGPC} className="form-select selectoption" required>
-                      <option value="" selected hidden>
-                        GPC
-                      </option>
-                      {gpc.map((option) => (
-                        <option key={option.id} value={option.name}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <p className="mb-2 mt-2">Select Supplier*</p>
-                    <select value={isUserPresent ? userData.productSupplier : supplieroption} onChange={handleSelectSupplier} className="form-select selectoption" required>
-                      <option value="" selected hidden>
-                        GLN + Supplier Name
-                      </option>
-                      {supplier.map((option) => (
-                        <option key={option.id} value={option.name}>
-                          {option.gln + "     " + option.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <p className="mb-2 mt-2">Select LCA Term*</p>
-                    <select value={isUserPresent ? userData.lcaTerm : lcaoption} onChange={handleSelectLCATerm} className="form-select selectoption" required>
-                      <option value="" selected hidden>
-                        LCA Term
-                      </option>
-                      {lcaTerm.map((option) => (
-                        <option key={option.id} value={option.name}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
-
-                    <p className="mb-2 mt-2">Locations*</p>
-                    <select value={isUserPresent ? userData.location : daplocationoption} onChange={handleSelectLocation} className="form-select selectoption" required>
-                      <option value="" selected hidden>
-                        DAP Locations
-                      </option>
-                      {dapLocations.map((option) => (
-                        <option key={option.id} value={option.City}>
-                          {option.Country + "-" + option.City}
-                        </option>
-                      ))}
-                    </select>
-
-                    <div className="mt-3">
-                      <p className="mb-2">Calculation Frameworks*</p>
-                      <select value={isUserPresent ? userData.calculationFramework : frameworkoption} onChange={handleSelectFrameworks} className="form-select selectoption mb-4" required>
-                        <option value="" selected hidden>
-                          Select an Option
-                        </option>
-                        {options.map((option) => (
-                          <option key={option.id} value={option.name}>
-                            {option.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+    <>
+      <Header />
+      <div className="container page-container col-md-12">
+        <form onSubmit={isUserPresent ? handleNext : handleNext}>
+          <div className="topmost campaign">
+            <div className="row">
+              <div className="col-md-6 pdr">
+                <div className="d-flex flex-column justify-content-center">
+                  <div className="adjust">
+                    <span>Define your new data Campaign</span>
+                    <h4 className="mb-2 mt-2 startcampaign">What campaign would you like to start?</h4>
                   </div>
-                </div>
-
-                <div className="col-md-6 pdl-4">
-                  <div className="setModuleheight">
-                    <div className="bg-white p-4 rounded text-left">
-                      <p className="font-weight-bold mb-3">
-                        <b>Module</b>
-                        <span className="linkclick">imde.io</span>
-                      </p>
-                      {/* Add the link here*/}
-                      <p className="font-weight-bold mb-3">
-                        <b>Output</b>
-                      </p>
-                      {errorcheck && <p className="ml-2 warnrd">You need to select any one of the options</p>}
-                      {checkboxes.map((checkbox) => (
-                        <div key={checkbox.id} className="d-flex justify-content-between form-check mb-3">
-                          <label className="form-check-label" htmlFor={`checkbox-${checkbox.id}`}>
-                            {checkbox.name}
+                  <p className="mb-2 mt-4">Select Campaign*</p>
+                  <div className="custom-dropdown">
+                    <button className="form-select mb-1 selectoption" style={{ textAlign: "left" }} type="button">
+                      {selectedOption || "Product Carbon Footprint"}
+                    </button>
+                    <div className="dropdown-content">
+                      {campaignoptions.map((option) => (
+                        <div key={option.id} className="dropdown-item">
+                          <input
+                            className="form-check-input mgr"
+                            type="checkbox"
+                            checked={option.checked}
+                            onChange={() => handleCheckboxChange(option.id)}
+                            id={`checkbox-${option.id}`}
+                          />
+                          <label htmlFor={`checkbox-${option.id}`} className={option.checked ? "optionbg" : ""}>
+                            {option.name}
                           </label>
-                          <input className="form-check-input" type="checkbox" checked={checkbox.checked} onChange={() => handleCheckboxChange(checkbox.id)} id={`checkbox-${checkbox.id}`} />
                         </div>
                       ))}
-
-                      <div>
-                        {manufacturerData && (
-                          <div className="mt-4 mb-4 mx-4">
-                            <img src={imagePreviewUrl} alt="Manufacturer Logo" />
-                            <p className="mt-2">Manufacturer: Zwanenberg</p>
-                          </div>
-                        )}
-                        {!manufacturerData && (
-                          <div className="mt-4 mb-4 mx-4">
-                            {!imagePreviewUrl && <input type="file" className="form-control" id="file" accept=".jpg, .jpeg, .png" required onChange={handleImageUpload} />}
-                            {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" style={{ width: "200px", height: "200px", display: "block", marginTop: "20px" }} />}
-                            <br />
-                          </div>
-                        )}
-                      </div>
                     </div>
+                  </div>
+                  <p className="mb-2 mt-4">Product ID (Global Trade Item Number-GTIN)</p>
 
-                    <div className="mt-4">
-                      <p className="mb-2">Choose Auditor*</p>
-                      <select className="form-select pname" value={isUserPresent ? userData.auditor : "Impact Buying"} required>
-                        <option value="" selected hidden>
-                          Select an Option
+                  <div className="row mt-2">
+                    <div className="col-md-4">
+                      <p className="mb-2">Each / base unit*</p>
+                    </div>
+                    <div className="col-md-8 pt">
+                      <input
+                        type="number"
+                        className="form-control mb-2"
+                        placeholder="14-digit GTIN"
+                        onChange={(e) => {
+                          setBaseUnitGTIN(e.target.value);
+                          if (isUserPresent) {
+                            setUserData({ ...userData, productBaseUnitGTIN: e.target.value });
+                          }
+                        }}
+                        required
+                        value={isUserPresent ? userData.productBaseUnitGTIN : baseunitGTIN}
+                      />
+                    </div>
+                  </div>
+                  {baseuniterr && <p className="ml-2 warnrd">Your Base Unit GTIN should be of 14 digits</p>}
+
+                  <div className="row">
+                    <div className="col-md-4">
+                      <p className="mb-2">Case*</p>
+                    </div>
+                    <div className="col-md-8 pt">
+                      <input
+                        type="number"
+                        className="form-control mb-2"
+                        placeholder="14-digit GTIN"
+                        onChange={(e) => {
+                          setCaseUnitGTIN(e.target.value);
+                          if (isUserPresent) {
+                            setUserData({ ...userData, productCaseGTIN: e.target.value });
+                          }
+                        }}
+                        required
+                        value={isUserPresent ? userData.productCaseGTIN : caseunitGTIN}
+                      />
+                    </div>
+                  </div>
+                  {caseuniterr && <p className="ml-2 warnrd">Your Case Unit GTIN should be of 14 digits</p>}
+
+                  <div className="row">
+                    <div className="col-md-4">
+                      <p className="mb-2">Pallet</p>
+                    </div>
+                    <div className="col-md-8 pt">
+                      <input
+                        type="number"
+                        className="form-control mb-2"
+                        placeholder="14-digit GTIN"
+                        onChange={(e) => {
+                          setPalletUnitGTIN(e.target.value);
+                          if (isUserPresent) {
+                            setUserData({ ...userData, productPalletGTIN: e.target.value });
+                          }
+                        }}
+                        value={isUserPresent ? userData.productPalletGTIN : palletunitGTIN}
+                      />
+                    </div>
+                  </div>
+                  {palletuniterr && <p className="ml-2 warnrd">Your Pallet Unit GTIN should be of 14 digits</p>}
+
+                  <div className="mt-2">
+                    <div>Product Name*</div>
+                    <div>
+                      <input
+                        type="text"
+                        className="form-control pname"
+                        placeholder="Enter Product Name"
+                        onChange={(e) => {
+                          setProductNameCampaign(e.target.value);
+                          if (isUserPresent) {
+                            setUserData({ ...userData, productName: e.target.value });
+                          }
+                        }}
+                        required
+                        value={isUserPresent ? userData.productName : productNameCampaign}
+                      />
+                    </div>
+                  </div>
+
+                  <p className="mb-2 mt-2">Select Global Product Classification*</p>
+                  <select value={isUserPresent ? userData.globalProductClassification : gpcoption} onChange={handleSelectGPC} className="form-select selectoption" required>
+                    <option value="" selected hidden>
+                      GPC
+                    </option>
+                    {gpc.map((option) => (
+                      <option key={option.id} value={option.name}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <p className="mb-2 mt-2">Select Supplier*</p>
+                  <select value={isUserPresent ? userData.productSupplier : supplieroption} onChange={handleSelectSupplier} className="form-select selectoption" required>
+                    <option value="" selected hidden>
+                      GLN + Supplier Name
+                    </option>
+                    {supplier.map((option) => (
+                      <option key={option.id} value={option.name}>
+                        {option.gln + "     " + option.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <p className="mb-2 mt-2">Select LCA Term*</p>
+                  <select value={isUserPresent ? userData.lcaTerm : lcaoption} onChange={handleSelectLCATerm} className="form-select selectoption" required>
+                    <option value="" selected hidden>
+                      LCA Term
+                    </option>
+                    {lcaTerm.map((option) => (
+                      <option key={option.id} value={option.name}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <p className="mb-2 mt-2">Locations*</p>
+                  <select value={isUserPresent ? userData.location : daplocationoption} onChange={handleSelectLocation} className="form-select selectoption" required>
+                    <option value="" selected hidden>
+                      DAP Locations
+                    </option>
+                    {dapLocations.map((option) => (
+                      <option key={option.id} value={option.City}>
+                        {option.Country + "-" + option.City}
+                      </option>
+                    ))}
+                  </select>
+
+                  <div className="mt-3">
+                    <p className="mb-2">Calculation Frameworks*</p>
+                    <select value={isUserPresent ? userData.calculationFramework : frameworkoption} onChange={handleSelectFrameworks} className="form-select selectoption mb-4" required>
+                      <option value="" selected hidden>
+                        Select an Option
+                      </option>
+                      {options.map((option) => (
+                        <option key={option.id} value={option.name}>
+                          {option.name}
                         </option>
-                        {auditors.map((auditor) => (
-                          <option key={auditor} value={auditor}>
-                            {auditor}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
-              <div className="page-btn">
-                <input type="submit" name="submit" value={isUserPresent ? "Save & Next" : "Next"} className="btn fractals-btn btn-lg w-100 mb-3" />
+
+              <div className="col-md-6 pdl">
+                <div className="setModuleheight">
+                  <div className="p-4 rounded text-left">
+                    <p className="font-weight-bold mb-3">
+                      <b>Module</b>
+                      <span className="linkclick">imde.io</span>
+                    </p>
+                    <p className="font-weight-bold mb-3">
+                      <b>Output</b>
+                    </p>
+                    {errorcheck && <p className="ml-2 warnrd">You need to select any one of the options</p>}
+                    {checkboxes.map((checkbox) => (
+                      <div key={checkbox.id} className="d-flex justify-content-between form-check mb-3">
+                        <label className="form-check-label" htmlFor={`checkbox-${checkbox.id}`}>
+                          {checkbox.name}
+                        </label>
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={checkbox.checked}
+                          onChange={() => handleCheckboxChange(checkbox.id)}
+                          id={`checkbox-${checkbox.id}`}
+                        />
+                      </div>
+                    ))}
+
+                    <div>
+                      {manufacturerData && (
+                        <div className="mt-4 mb-4 mx-4">
+                          <img src={imagePreviewUrl} alt="Manufacturer Logo" className="img-fluid" />
+                          <p className="mt-2">Manufacturer: Zwanenberg</p>
+                        </div>
+                      )}
+                      {!manufacturerData && (
+                        <div className="mt-4 mb-4 mx-4">
+                          {!imagePreviewUrl && <input type="file" className="form-control" id="file" accept=".jpg, .jpeg, .png" required onChange={handleImageChange} />}
+                          {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" className="img-fluid" />}
+                          <br />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div><div className="mt-4">
+                    <p className="mb-2">Choose Auditor*</p>
+                    <select className="form-select pname" value={isUserPresent ? userData.auditor : "Impact Buying"} required>
+                      <option value="" selected hidden>
+                        Select an Option
+                      </option>
+                      {auditors.map((auditor) => (
+                        <option key={auditor} value={auditor}>
+                          {auditor}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
               </div>
             </div>
-          </form>
-        </div>
+            <div className="page-btn">
+              <input type="submit" name="submit" value={isUserPresent ? "Save & Next" : "Next"} className="btn" />
+              </div>
+          </div>
+        </form>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Select;
+export default LaunchCampaign;

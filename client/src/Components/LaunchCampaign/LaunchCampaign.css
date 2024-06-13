@@ -1,3 +1,8 @@
+
+.campaign {
+  color: #666666;
+}
+
 .custom-dropdown {
   position: relative;
   display: inline-block;
@@ -39,4 +44,18 @@
 .topmost {
   position: relative;
 }
+.setModuleheight {
+  background: #eaeff44f;
+  border-left: 2px dotted #2aa15f;
+}
 
+.form-check-input {
+  width: 1.2em;
+  height: 1.2em;
+  border: 1.5px solid #2aa15f;
+}
+
+.campaign select, .campaign input, .campaign button, .campaign p, .campaign label {
+  font-size: 15px;
+  color: #666666;
+}
