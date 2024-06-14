@@ -19,11 +19,12 @@
 .custom-modal {
   background: white;
   border-radius: 5px;
-  max-width: 1000px;
+  max-width: 600px;
   width: 100%;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1; /* Set to 1 or a value that aligns with your content */
+  margin: 10% auto;
 }
 
 .custom-modal::-webkit-scrollbar {
@@ -58,4 +59,8 @@
   background: none;
   font-size: 1.5rem;
   cursor: pointer;
+}
+#chat-container {
+  width: 600px;
+  height: 100%;
 }

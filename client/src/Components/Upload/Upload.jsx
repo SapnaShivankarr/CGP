@@ -188,6 +188,7 @@ const UploadDataScreen = () => {
             <div className="col-md-12">
               <h4 style={{fontWeight:'700'}}>Upload data to your company vault</h4>
               <p>Data types</p>
+              {userType.toLowerCase() === "manufacturer" ? <p>You have to upload both BOM and Event File</p> : ""}
             </div>
 
             <div className="row below-section">
