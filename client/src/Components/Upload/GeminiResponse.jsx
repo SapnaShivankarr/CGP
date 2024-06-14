@@ -116,7 +116,7 @@ const GeminiResponse = () => {
         .split(";")
         .find((cookie) => cookie.trim().startsWith("fileUrl="))
         .split("=")[1]
-        .includes("mfg-bom") === true;
+        .includes("mfg_bom") === true;
     console.log(manufacturereventtype);
     try {
       console.log(userType);
@@ -128,12 +128,42 @@ const GeminiResponse = () => {
       } else if (manufacturereventtype) {
         const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/mfg/bom/?filename=${encodeURIComponent(filename)}`);
         if (response.status === 200) {
-          navigate("/share");
-        }
-      } else {
-        const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/mfg/event/?filename=${encodeURIComponent(filename)}`);
-        if (response.status === 200) {
-          navigate("/share");
+          const filenumber = document.cookie
+            .split(";")
+            .find((cookie) => cookie.trim().startsWith("nooffiles="))
+            .split("=")[1];
+
+          if (filenumber === "0") {
+            document.cookie = `nooffiles=1;path=/`;
+            document.cookie = `manufacturebom=true;path=/`;
+            navigate("/upload");
+          }
+          if (filenumber === "1") {
+            document.cookie = `manufacturebom=true;path=/`;
+            navigate("/share");
+          }
+
+        } else {
+          const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/mfg/event/?filename=${encodeURIComponent(filename)}`);
+
+          if (response.status === 200) {
+            const filenumber = document.cookie
+              .split(";")
+              .find((cookie) => cookie.trim().startsWith("nooffiles="))
+              .split("=")[1];
+            console.log(filenumber);
+            console.log(typeof filenumber);
+
+            if (filenumber === "0") {
+              document.cookie = `nooffiles=1;path=/`;
+              document.cookie = `manufactureevent=true;path=/`;
+              navigate("/upload");
+            }
+            if (filenumber === "1") {
+              document.cookie = `manufactureevent=true;path=/`;
+              navigate("/share");
+            }
+          }
         }
       }
     } catch (error) {
@@ -144,58 +174,58 @@ const GeminiResponse = () => {
 
   return (
     <>
-    <Header />
-    <div className="container page-container">
-      <div className="col-12 custom-calculated-results" style={{ marginBottom: "4rem" }}>
-        <div className="gemini-container" style={{ border: "12px double gray", borderRadius: "10px", padding: "20px" }}>
-          <div className="gemini-header">
-            <span className="gemini-logo">
-              <h4>Gemini</h4>
-            </span>
-          </div>
-          <div className="gemini-content">
-            {falsecount === 0 ? (
-              <>
-                {Object.keys(presentdata).length !== 0 ? (
-                  <>
-                    <p><b>Your Data looks good. Click on Next</b></p>
-                    <ul>
-                      {Object.keys(presentdata).map((key) => (
-                        <li key={key}>{key}</li>
-                      ))}
-                    </ul>
-                  </>
-                ) : (
-                  <p>Please wait</p>
-                )}
-              </>
-            ) : (
-              <>
-                <p><b>Sorry, your Data Uploaded does not contain the below fields. Please re-upload your file.</b></p>
-                <ul>
-                  {Object.keys(finaldata).map((key) => (
-                    <li key={key}>{key}</li>
-                  ))}
-                </ul>
-                <p><b>Below is the Data Available in the document:</b></p>
-                <ul>
-                  {Object.keys(presentdata).map((key) => (
-                    <li key={key}>{key}</li>
-                  ))}
-                </ul>
-              </>
-            )}
+      <Header />
+      <div className="container page-container">
+        <div className="col-12 custom-calculated-results" style={{ marginBottom: "4rem" }}>
+          <div className="gemini-container" style={{ border: "12px double gray", borderRadius: "10px", padding: "20px" }}>
+            <div className="gemini-header">
+              <span className="gemini-logo">
+                <h4>Gemini</h4>
+              </span>
+            </div>
+            <div className="gemini-content">
+              {falsecount === 0 ? (
+                <>
+                  {Object.keys(presentdata).length !== 0 ? (
+                    <>
+                      <p><b>Your Data looks good. Click on Next</b></p>
+                      <ul>
+                        {Object.keys(presentdata).map((key) => (
+                          <li key={key}>{key}</li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : (
+                    <p>Please wait</p>
+                  )}
+                </>
+              ) : (
+                <>
+                  <p><b>Sorry, your Data Uploaded does not contain the below fields. Please re-upload your file.</b></p>
+                  <ul>
+                    {Object.keys(finaldata).map((key) => (
+                      <li key={key}>{key}</li>
+                    ))}
+                  </ul>
+                  <p><b>Below is the Data Available in the document:</b></p>
+                  <ul>
+                    {Object.keys(presentdata).map((key) => (
+                      <li key={key}>{key}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
           </div>
         </div>
+        <div>
+          {falsecount === 0 ? (
+            <button className="page-btn" onClick={handleSuccess}>Next</button>
+          ) : (
+            <button className="page-btn" onClick={handleOnClick}>Try Again</button>
+          )}
+        </div>
       </div>
-      <div>
-        {falsecount === 0 ? (
-          <button className="page-btn" onClick={handleSuccess}>Next</button>
-        ) : (
-          <button className="page-btn" onClick={handleOnClick}>Try Again</button>
-        )}
-      </div>
-    </div>
     </>
   );
 };

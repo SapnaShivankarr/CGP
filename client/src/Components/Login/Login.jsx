@@ -33,6 +33,7 @@ const Login = () => {
         document.cookie = `encryptedbucketpath=${data.encryptedBucketPath}; path=/`;
         document.cookie = `finalresultbucketpath=${data.finalResultBucketPath}; path=/`;
         document.cookie = `active=${data.active}; path=/`;
+        document.cookie = `nooffiles=0;path=/`;
         console.log("Login Successful!!");
         if (data.userType.toLowerCase() === "retailer") {
           navigate("/campaign");

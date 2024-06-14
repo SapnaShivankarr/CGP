@@ -21,6 +21,7 @@ const UploadDataScreen = () => {
   const [encryptdBucketPath, setEncryptdBucketPath] = useState("");
   const [finalResultBucketPath, setFinalResultBucketPath] = useState("");
   const [active, setActive] = useState(true);
+  const [eventUser, setEventUser] = useState(false);
 
   useEffect(() => {
     const getCookieValue = (name) => {
@@ -34,6 +35,13 @@ const UploadDataScreen = () => {
       setRetailerUser(true);
     }
     console.log(usertype);
+    if (usertype.toLowerCase() === "manufacturer" && getCookieValue("manufactureevent")) {
+      setEventUser(true);
+    }
+ 
+    if (usertype.toLowerCase() === "manufacturer" && getCookieValue("manufacturebom")) {
+      setRetailerUser(true);
+    }
 
     setUserName(getCookieValue("userName"));
     setUserBucketPath(getCookieValue("userBucketPath"));
@@ -194,15 +202,15 @@ const UploadDataScreen = () => {
               </div>
             </div>
 
-            <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
-              <div className="box">
+            <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${eventUser ? "disable-btn-border" : "btn-border"}`}>
+              <div className={eventUser ? "boxpit" : "box"}>
                 <label className="file-label">
                   Own Events Emission
-                  <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} />
+                  <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} disabled={eventUser} />
                 </label>
               </div>
             </div>
-
+        
             <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
               <div className="box">
                 <label className="file-label">

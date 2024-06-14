@@ -337,7 +337,7 @@ const LaunchCampaign = () => {
     event.preventDefault();
     const selectedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked);
     const strimp = selectedCheckboxes.map((option) => option.name).join(", ");
-    const updatedUserData = { ...userData, campaignTypes: strimp };
+    const updatedUserData = { ...userData, campaignTypes: strimp || "" };
 
     try {
       console.log(updatedUserData);
@@ -583,24 +583,24 @@ const LaunchCampaign = () => {
                     </div>
                   </div>
                 </div><div className="mt-4">
-                    <p className="mb-2">Choose Auditor*</p>
-                    <select className="form-select pname" value={isUserPresent ? userData.auditor : "Impact Buying"} required>
-                      <option value="" selected hidden>
-                        Select an Option
+                  <p className="mb-2">Choose Auditor*</p>
+                  <select className="form-select pname" value={isUserPresent ? userData.auditor : "Impact Buying"} required>
+                    <option value="" selected hidden>
+                      Select an Option
+                    </option>
+                    {auditors.map((auditor) => (
+                      <option key={auditor} value={auditor}>
+                        {auditor}
                       </option>
-                      {auditors.map((auditor) => (
-                        <option key={auditor} value={auditor}>
-                          {auditor}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                    ))}
+                  </select>
+                </div>
 
               </div>
             </div>
             <div className="page-btn">
               <input type="submit" name="submit" value={isUserPresent ? "Save & Next" : "Next"} className="btn" />
-              </div>
+            </div>
           </div>
         </form>
       </div>
