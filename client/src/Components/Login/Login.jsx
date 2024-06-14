@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './Login.css'
+import "./Login.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -17,7 +17,7 @@ const Login = () => {
         throw new Error("Please fill in both username and password.");
       }
       // Make API call to authenticate user
-      const response = await axios.post("http://localhost:9001/login-service/api/v1/authenticate/", {
+      const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/login-service/api/v1/authenticate/", {
         userName: username,
         pwd: password,
       });
@@ -62,7 +62,10 @@ const Login = () => {
           <div className="col-lg-6 col-12 col-left login-container">
             <div className="login-text">
               <h2>Fractals</h2>
-              <p>Sustainability data collaboration in the end-to-end consumer goods value chain!</p>  <a href="/signup" className="btn">Sign Up</a>
+              <p>Sustainability data collaboration in the end-to-end consumer goods value chain!</p>{" "}
+              <a href="/signup" className="btn">
+                Sign Up
+              </a>
             </div>
           </div>
           <div className="col-lg-6 col-12 col-right">
@@ -70,11 +73,29 @@ const Login = () => {
               <h2>Login</h2>
               {error && <span className="text-danger text-center">{error}</span>}
               <form>
-                <p> <label>Username<span>*</span></label> <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required /> </p>
-                <p> <label>Password<span>*</span></label> <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required /> </p>
+                <p>
+                  {" "}
+                  <label>
+                    Username<span>*</span>
+                  </label>{" "}
+                  <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />{" "}
+                </p>
+                <p>
+                  {" "}
+                  <label>
+                    Password<span>*</span>
+                  </label>{" "}
+                  <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />{" "}
+                </p>
 
-                <button type="button" onClick={handleLogin} className="btn p-1"> Login </button>
-                <p> <a href="">Forgot password?</a> </p>
+                <button type="button" onClick={handleLogin} className="btn p-1">
+                  {" "}
+                  Login{" "}
+                </button>
+                <p>
+                  {" "}
+                  <a href="">Forgot password?</a>{" "}
+                </p>
               </form>
             </div>
           </div>

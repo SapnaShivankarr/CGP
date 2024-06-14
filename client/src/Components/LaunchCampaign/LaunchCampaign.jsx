@@ -79,7 +79,7 @@ const LaunchCampaign = () => {
       try {
         let response;
         if (getIdforsearch) {
-          response = await axios.get(`http://localhost:9001/campaign-file-service/api/v1/campaign/${getIdforsearch}`);
+          response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/${getIdforsearch}`);
 
           if (response.status === 200) {
             setUserPresent(true);
@@ -304,7 +304,7 @@ const LaunchCampaign = () => {
     formData.append("loginResponseDTO", new Blob([JSON.stringify(loginResponseDTO)], { type: "application/json" }));
 
     try {
-      const response = await axios.post("http://localhost:9001/campaign-file-service/api/v1/campaign/", formData, {
+      const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -341,7 +341,7 @@ const LaunchCampaign = () => {
 
     try {
       console.log(updatedUserData);
-      const response = await axios.put("http://localhost:9001/campaign-file-service/api/v1/campaign/", updatedUserData, {
+      const response = await axios.put("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/", updatedUserData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -359,7 +359,7 @@ const LaunchCampaign = () => {
     <>
       <Header />
       <div className="container page-container col-md-12">
-        <form onSubmit={isUserPresent ? handleNext : handleNext}>
+        <form onSubmit={isUserPresent ? completeEdit : handleNext}>
           <div className="topmost campaign">
             <div className="row">
               <div className="col-md-6 pdr">
@@ -376,13 +376,7 @@ const LaunchCampaign = () => {
                     <div className="dropdown-content">
                       {campaignoptions.map((option) => (
                         <div key={option.id} className="dropdown-item">
-                          <input
-                            className="form-check-input mgr"
-                            type="checkbox"
-                            checked={option.checked}
-                            onChange={() => handleCheckboxChange(option.id)}
-                            id={`checkbox-${option.id}`}
-                          />
+                          <input className="form-check-input mgr" type="checkbox" checked={option.checked} onChange={() => handleCheckboxChange(option.id)} id={`checkbox-${option.id}`} />
                           <label htmlFor={`checkbox-${option.id}`} className={option.checked ? "optionbg" : ""}>
                             {option.name}
                           </label>
@@ -556,13 +550,7 @@ const LaunchCampaign = () => {
                         <label className="form-check-label" htmlFor={`checkbox-${checkbox.id}`}>
                           {checkbox.name}
                         </label>
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          checked={checkbox.checked}
-                          onChange={() => handleCheckboxChange(checkbox.id)}
-                          id={`checkbox-${checkbox.id}`}
-                        />
+                        <input className="form-check-input" type="checkbox" checked={checkbox.checked} onChange={() => handleCheckboxChange(checkbox.id)} id={`checkbox-${checkbox.id}`} />
                       </div>
                     ))}
 
@@ -575,14 +563,15 @@ const LaunchCampaign = () => {
                       )}
                       {!manufacturerData && (
                         <div className="mt-4 mb-4 mx-4">
-                          {!imagePreviewUrl && <input type="file" className="form-control" id="file" accept=".jpg, .jpeg, .png" required onChange={handleImageChange} />}
+                          {!imagePreviewUrl && <input type="file" className="form-control tooltip-test" title="Please upload a Jpeg or Png file" id="file" accept=".jpg, .jpeg, .png" required onChange={handleImageChange} />}
                           {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" className="img-fluid" />}
                           <br />
                         </div>
                       )}
                     </div>
                   </div>
-                </div><div className="mt-4">
+                </div>
+                <div className="mt-4">
                   <p className="mb-2">Choose Auditor*</p>
                   <select className="form-select pname" value={isUserPresent ? userData.auditor : "Impact Buying"} required>
                     <option value="" selected hidden>
@@ -595,7 +584,6 @@ const LaunchCampaign = () => {
                     ))}
                   </select>
                 </div>
-
               </div>
             </div>
             <div className="page-btn">

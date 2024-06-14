@@ -13,7 +13,7 @@ const Share = () => {
   const [alcal, setAlCal] = useState(true);
   const [shmarketplace, setShMarketPlace] = useState(true);
   const [CampaignInfo, setCampaign] = useState("");
-  const defaultImage = "https://images.pexels.com/photos/1037992/pexels-photo-1037992.jpeg?auto=compress&cs=tinysrgb&w=140&h=750&dpr=2";
+  const defaultImage = "https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg?w=140&t=st=1718346796~exp=1718347396~hmac=e939e86149aef1f72f928bfd38f79f4d975bf060c59c6f5270579613219daa93";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +25,7 @@ const Share = () => {
           throw new Error("CampaignId cookie is not found or invalid.");
         }
 
-        const response = await axios.get(`http://localhost:9001/campaign-file-service/api/v1/campaign/${getfinalId}`);
+        const response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/${getfinalId}`);
 
         if (response.status === 200) {
           setCampaign(response.data.responseData);

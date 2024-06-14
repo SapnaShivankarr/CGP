@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
+import CustomModal from "../Chatbot/CustomModal";
 
 function Header() {
   const [loggedInUser, setLoggedInUser] = useState("");
@@ -45,24 +46,17 @@ function Header() {
     <header class="header">
       <div class="app-name">Fractals</div>
       <div class="user-controls">
-        <Button variant="primary" onClick={handleShowModal}>
+        <button type="button" className="btn btn-primary" onClick={handleShowModal}>
           Launch demo modal
-        </Button>
-        <Modal show={showModal} onHide={handleCloseModal} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal title</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <iframe src="https://chatui-k5atvf3ecq-ez.a.run.app/" title="Chatbot" width="100%" height="400px"></iframe>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        </button>
+
+        <CustomModal show={showModal} handleClose={handleCloseModal} title="Fractals Chatbot">
+          <p>...</p>
+        </CustomModal>
         <div class="username">{loggedInUser}</div>
-        <button class="logout-button" onClick={handleLogout}>Logout</button>
+        <button class="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </header>
   );

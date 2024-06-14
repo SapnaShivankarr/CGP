@@ -120,13 +120,14 @@ const GeminiResponse = () => {
     console.log(manufacturereventtype);
     try {
       console.log(userType);
+      console.log(manufacturereventtype);
       if (userType.toLowerCase() === "retailer") {
-        const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/retailer/event/?filename=${encodeURIComponent(filename)}`);
+        const response = await axios.post(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/file-services/api/v1/move/retailer/event/?filename=${encodeURIComponent(filename)}`);
         if (response.status === 200) {
           navigate("/share");
         }
       } else if (manufacturereventtype) {
-        const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/mfg/bom/?filename=${encodeURIComponent(filename)}`);
+        const response = await axios.post(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/file-services/api/v1/move/mfg/bom/?filename=${encodeURIComponent(filename)}`);
         if (response.status === 200) {
           const filenumber = document.cookie
             .split(";")
@@ -137,32 +138,29 @@ const GeminiResponse = () => {
             document.cookie = `nooffiles=1;path=/`;
             document.cookie = `manufacturebom=true;path=/`;
             navigate("/upload");
-          }
-          if (filenumber === "1") {
+          } else {
             document.cookie = `manufacturebom=true;path=/`;
             navigate("/share");
           }
+        }
+      } else {
+        const response = await axios.post(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/file-services/api/v1/move/mfg/event/?filename=${encodeURIComponent(filename)}`);
 
-        } else {
-          const response = await axios.post(`http://localhost:9001/file-services/api/v1/move/mfg/event/?filename=${encodeURIComponent(filename)}`);
+        if (response.status === 200) {
+          const filenumber = document.cookie
+            .split(";")
+            .find((cookie) => cookie.trim().startsWith("nooffiles="))
+            .split("=")[1];
+          console.log(filenumber);
+          console.log(typeof filenumber);
 
-          if (response.status === 200) {
-            const filenumber = document.cookie
-              .split(";")
-              .find((cookie) => cookie.trim().startsWith("nooffiles="))
-              .split("=")[1];
-            console.log(filenumber);
-            console.log(typeof filenumber);
-
-            if (filenumber === "0") {
-              document.cookie = `nooffiles=1;path=/`;
-              document.cookie = `manufactureevent=true;path=/`;
-              navigate("/upload");
-            }
-            if (filenumber === "1") {
-              document.cookie = `manufactureevent=true;path=/`;
-              navigate("/share");
-            }
+          if (filenumber === "0") {
+            document.cookie = `nooffiles=1;path=/`;
+            document.cookie = `manufactureevent=true;path=/`;
+            navigate("/upload");
+          } else {
+            document.cookie = `manufactureevent=true;path=/`;
+            navigate("/share");
           }
         }
       }
@@ -188,7 +186,9 @@ const GeminiResponse = () => {
                 <>
                   {Object.keys(presentdata).length !== 0 ? (
                     <>
-                      <p><b>Your Data looks good. Click on Next</b></p>
+                      <p>
+                        <b>Your Data looks good. Click on Next</b>
+                      </p>
                       <ul>
                         {Object.keys(presentdata).map((key) => (
                           <li key={key}>{key}</li>
@@ -201,13 +201,17 @@ const GeminiResponse = () => {
                 </>
               ) : (
                 <>
-                  <p><b>Sorry, your Data Uploaded does not contain the below fields. Please re-upload your file.</b></p>
+                  <p>
+                    <b>Sorry, your Data Uploaded does not contain the below fields. Please re-upload your file.</b>
+                  </p>
                   <ul>
                     {Object.keys(finaldata).map((key) => (
                       <li key={key}>{key}</li>
                     ))}
                   </ul>
-                  <p><b>Below is the Data Available in the document:</b></p>
+                  <p>
+                    <b>Below is the Data Available in the document:</b>
+                  </p>
                   <ul>
                     {Object.keys(presentdata).map((key) => (
                       <li key={key}>{key}</li>
@@ -220,9 +224,13 @@ const GeminiResponse = () => {
         </div>
         <div>
           {falsecount === 0 ? (
-            <button className="page-btn" onClick={handleSuccess}>Next</button>
+            <button className="page-btn" onClick={handleSuccess}>
+              Next
+            </button>
           ) : (
-            <button className="page-btn" onClick={handleOnClick}>Try Again</button>
+            <button className="page-btn" onClick={handleOnClick}>
+              Try Again
+            </button>
           )}
         </div>
       </div>

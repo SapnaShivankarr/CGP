@@ -38,7 +38,7 @@ const UploadDataScreen = () => {
     if (usertype.toLowerCase() === "manufacturer" && getCookieValue("manufactureevent")) {
       setEventUser(true);
     }
- 
+
     if (usertype.toLowerCase() === "manufacturer" && getCookieValue("manufacturebom")) {
       setRetailerUser(true);
     }
@@ -74,7 +74,7 @@ const UploadDataScreen = () => {
       if (userType.toLowerCase() === "manufacturer") {
         if (bomFile) {
           formData.append("file", bomFile);
-          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/mfg/bom/", formData, {
+          const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/file-services/api/v1/upload/mfg/bom/", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -94,7 +94,7 @@ const UploadDataScreen = () => {
           }
         } else if (eventFile) {
           formData.append("file", eventFile);
-          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/mfg/event/", formData, {
+          const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/file-services/api/v1/upload/mfg/event/", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -118,7 +118,7 @@ const UploadDataScreen = () => {
       if (userType.toLowerCase() === "retailer") {
         if (eventFile) {
           formData.append("file", eventFile);
-          const response = await axios.post("http://localhost:9001/file-services/api/v1/upload/retailer/event/", formData, {
+          const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/file-services/api/v1/upload/retailer/event/", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -184,65 +184,64 @@ const UploadDataScreen = () => {
       <Header />
       <div className="container page-container">
         <div className="row">
-        <div className="col-md-8">
-          <div className="col-md-12">
-            <h4>Upload data to your company vault</h4>
-            <p>Data types</p>
-          </div>
-
-
-          <div className="row below-section">
-            <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${RetailerUser ? "disable-btn-border" : "btn-border"}`}>
-              <div className={RetailerUser ? "boxpit" : "box"}>
-                <label className="file-label">
-                  Distributed Bill of Materials (BOM)
-                  <input type="file" accept=".xml" onChange={(e) => setBomFile(e.target.files[0])} style={{ display: "none" }} disabled={RetailerUser} />
-                  {RetailerUser && <span>BOM File Upload disabled for Retailers</span>}
-                </label>
-              </div>
-            </div>
-
-            <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${eventUser ? "disable-btn-border" : "btn-border"}`}>
-              <div className={eventUser ? "boxpit" : "box"}>
-                <label className="file-label">
-                  Own Events Emission
-                  <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} disabled={eventUser} />
-                </label>
-              </div>
-            </div>
-        
-            <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
-              <div className="box">
-                <label className="file-label">
-                  Others
-                  <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} />
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div className="row my-4">
+          <div className="col-md-8">
             <div className="col-md-12">
-              {displayFileName(bomFile, "bom")}
-              {displayFileName(eventFile, "event")}
-              {displayFileName(pdfFile, "pdf")}
+              <h4>Upload data to your company vault</h4>
+              <p>Data types</p>
             </div>
-          </div>
 
-          <div className="row my-4">
-            <div className="col-md-12 page-btn">
-              <button className="btn me-2" onClick={handleUpload}>
-                Upload
-              </button>
-              <button className="btn btn-secondary mt-2" onClick={() => navigate(-1)}>
-                Back
-              </button>
+            <div className="row below-section">
+              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${RetailerUser ? "disable-btn-border" : "btn-border"}`}>
+                <div className={RetailerUser ? "boxpit" : "box"}>
+                  <label className="file-label">
+                    Distributed Bill of Materials (BOM)
+                    <input type="file" accept=".xml" onChange={(e) => setBomFile(e.target.files[0])} style={{ display: "none" }} disabled={RetailerUser} />
+                    {RetailerUser && <span>BOM File Upload disabled for Retailers</span>}
+                  </label>
+                </div>
+              </div>
+
+              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${eventUser ? "disable-btn-border" : "btn-border"}`}>
+                <div className={eventUser ? "boxpit" : "box"}>
+                  <label className="file-label">
+                    Own Events Emission
+                    <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} disabled={eventUser} />
+                  </label>
+                </div>
+              </div>
+
+              <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
+                <div className="box">
+                  <label className="file-label">
+                    Others
+                    <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="row my-4">
+              <div className="col-md-12">
+                {displayFileName(bomFile, "bom")}
+                {displayFileName(eventFile, "event")}
+                {displayFileName(pdfFile, "pdf")}
+              </div>
+            </div>
+
+            <div className="row my-4">
+              <div className="col-md-12 page-btn">
+                <button className="btn me-2" onClick={handleUpload}>
+                  Upload
+                </button>
+                <button className="btn btn-secondary mt-2" onClick={() => navigate(-1)}>
+                  Back
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col-md-4">
-          <iframe src="https://chatui-k5atvf3ecq-ez.a.run.app/" title="Chatbot" width="100%" height="400px"></iframe>
-        </div>
+          <div className="col-md-4">
+            <iframe src="https://chatui-k5atvf3ecq-ez.a.run.app/" title="Chatbot" width="100%" height="400px"></iframe>
+          </div>
         </div>
       </div>
     </>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './Login.css'
+import "./Login.css";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -55,7 +55,10 @@ const Signup = () => {
           <div class="col-lg-6 col-12 col-left login-container">
             <div class="login-text">
               <h2>Fractals</h2>
-              <p>Sustainability data collaboration in the end-to-end consumer goods value chain!</p>  <a href="/" className="btn">Login</a>
+              <p>Sustainability data collaboration in the end-to-end consumer goods value chain!</p>{" "}
+              <a href="/" className="btn">
+                Login
+              </a>
             </div>
           </div>
           <div class="col-lg-6 col-12 col-right">
@@ -63,20 +66,42 @@ const Signup = () => {
               <h2>Sign Up</h2>
               {error && <p className="text-danger text-center">{error}</p>}
               <form action="">
+                <p>
+                  <label>
+                    Select Role<span>*</span>
+                  </label>{" "}
+                  <select value={role} onChange={(e) => setRole(e.target.value)} className="form-select form-select-lg">
+                    <option value="">Select Role</option>
+                    <option value="manufacturer">Manufacturer</option>
+                    <option value="retailer">Retailer</option>
+                    <option value="processor">Processor</option>
+                    <option value="lsp">LSP</option>
+                    <option value="farmer">Farmer</option>
+                    <option value="auditor">Auditor</option>
+                  </select>
+                </p>
+                <p>
+                  {" "}
+                  <label>
+                    Username<span>*</span>
+                  </label>{" "}
+                  <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />{" "}
+                </p>
+                <p>
+                  {" "}
+                  <label>
+                    Password<span>*</span>
+                  </label>
+                  <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />{" "}
+                </p>
 
-                <p><label>Select Role<span>*</span></label>  <select value={role} onChange={(e) => setRole(e.target.value)} className="form-select form-select-lg">
-                  <option value="">Select Role</option>
-                  <option value="manufacturer">Manufacturer</option>
-                  <option value="retailer">Retailer</option>
-                  <option value="processor">Processor</option>
-                  <option value="lsp">LSP</option>
-                  <option value="farmer">Farmer</option>
-                  <option value="auditor">Auditor</option>
-                </select></p>
-                <p>  <label>Username<span>*</span></label> <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} /> </p>
-                <p> <label>Password<span>*</span></label><input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} /> </p>
-
-                <p>  <label>Confirm Password<span>*</span></label> <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} /> </p>
+                <p>
+                  {" "}
+                  <label>
+                    Confirm Password<span>*</span>
+                  </label>{" "}
+                  <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />{" "}
+                </p>
                 <button type="button" onClick={handleSignup} className="btn p-1">
                   Sign Up
                 </button>
