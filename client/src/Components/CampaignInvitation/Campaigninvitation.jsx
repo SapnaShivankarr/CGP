@@ -29,7 +29,7 @@ const ActionsScreen = () => {
         document.cookie = `CampaignId=${userCampaigns[0].id}; path=/`;
       }
     } catch (error) {
-      console.error("Error fetching user name:", error);
+      console.error("Error fetching username:", error);
     }
   };
 
@@ -41,8 +41,8 @@ const ActionsScreen = () => {
     <>
       <Header />
       <div className="container page-container">
-        <h4>Campaign Invitation</h4>
-        <p>
+        <h4 style={{fontWeight:'700'}}>Campaign Invitation</h4>
+        <p className="mt-4">
           You've been invited by <span className="highlighted">{userName.createdBy}</span> to join a secure data platform.
         </p>
         <p>
@@ -62,18 +62,18 @@ const ActionsScreen = () => {
         </p>
 
         <div className="row below-section">
-          <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
-            <div className="box" onClick={() => goToPage("/review")}>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'300px'}}>
+            <div className="box btn w-100" onClick={() => goToPage("/review")}>
               Review Campaign
             </div>
           </div>
-          <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
-            <div className="box" onClick={() => goToPage("/upload")}>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'300px'}}>
+            <div className="box btn w-100" onClick={() => goToPage("/upload")}>
               Upload Data to Your Company Vault
             </div>
           </div>
-          <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
-            <div className="box" onClick={() => goToPage("/share")}>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'300px'}}>
+            <div className="box btn w-100" onClick={() => goToPage("/share")}>
               Share Campaign with Suppliers
             </div>
           </div>

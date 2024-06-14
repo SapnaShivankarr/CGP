@@ -4,7 +4,8 @@ body {
   font-size: 16px;
   font-weight: 400;
   color: #666666;
-  background: #eaeff4;
+  /* background: #eaeff4; */
+  background: #fff;
 }
 
 .header {
@@ -42,14 +43,13 @@ body {
   background-color: #d32f2f;
 }
 .page-container {
-  margin: 0;
-  padding: 3rem 5rem;
+  margin: 4% auto;
+  padding: 3rem 5rem 6rem;
   background: #fff;
   box-shadow: 0 0 5px #999999;
-  max-width: none;
 }
 
-.btn {
+.btn, .bg-btn {
   display: inline-block;
   padding: 7px 20px;
   font-size: 16px;
@@ -63,7 +63,7 @@ body {
   transition: .3s;
 }
 
-.btn:hover {
+.btn:hover, .bg-btn:hover {
   color: #2aa15f;
   box-shadow: inset 150px 0 0 0 #ffffff;
 }
@@ -120,15 +120,17 @@ select[type=submit]:hover, .page-btn .btn:hover {
   background: #2aa15f;
   color: #fff;
   font-weight: 600;
+  cursor: pointer;
+  width: 230px;
 }
 
-.btn-border:hover {
+/* .btn-border:hover {
   background: #fff;
   color: #000;
   border-color: #fff;
   transition: all 1s ease;
   cursor: pointer;
-}
+} */
 
 .below-section {
   margin: 2rem 0 2rem 0;
@@ -140,10 +142,9 @@ select[type=submit]:hover, .page-btn .btn:hover {
   margin-top: 0px;
 }
 .page-btn {
-  position: absolute;
-  right: 0;
-  bottom: 0;
   width: 200px;
+  float: right;
+  margin: 2rem 0;
 }
 .back-btn {
   left: 5rem;
@@ -151,13 +152,13 @@ select[type=submit]:hover, .page-btn .btn:hover {
   width: 150px;
 }
 .highlighted {
-  color: #4f95d9;
+  color: #2aa15f;
   font-weight: 600;
 }
-.boxpit {
+/* .boxpit {
   background: #ddd;
   color: #a79191c4;
-}
+} */
 
 .disable-btn-border {
   border: 3px solid #ddd;
@@ -165,6 +166,7 @@ select[type=submit]:hover, .page-btn .btn:hover {
   background: #ddd;
   color: #fff;
   font-weight: 600;
+  padding: 0.9rem;
 }
 
 

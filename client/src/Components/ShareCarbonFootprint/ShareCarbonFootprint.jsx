@@ -57,13 +57,13 @@ const Share = () => {
     <>
       <Header />
       <div className="container page-container">
-        <h4>Share calculated data</h4>
+        <h4 style={{fontWeight:'700'}}>Share calculated data</h4>
         <p className="font-weight-bold mb-3">Choose where to share data</p>
         <div className="row">
           <div className="col-md-4">
-            <div className="bg-white p-4 mb-3 rounded text-left">
-              <div className="mt-4 mb-4">
-                <img src={CampaignInfo.imageData ? `data:image/jpg;base64,${CampaignInfo.imageData}` : defaultImage} alt="Manufacturer Logo" />
+            <div className="bg-white mb-3 rounded text-left">
+              <div className="mb-4 p-2">
+                <img src={CampaignInfo.imageData ? `data:image/jpg;base64,${CampaignInfo.imageData}` : defaultImage} alt="Manufacturer Logo" style={{width:'200px'}} className="mb-3" />
                 <p className="mt-2">
                   <b>Campaign ID:</b> {CampaignInfo ? `${CampaignInfo.id}` : "Default Id"}
                 </p>
@@ -83,7 +83,7 @@ const Share = () => {
             </div>
           </div>
           <div className="col-md-8">
-            <div className="setModule">
+            <div className="setModule setModuleheight">
               <div className="bg-white p-4 rounded text-left">
                 <p className="font-weight-bold mb-3 linkclick">
                   <b>Company Data Vault</b>

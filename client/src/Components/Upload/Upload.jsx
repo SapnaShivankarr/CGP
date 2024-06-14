@@ -184,35 +184,35 @@ const UploadDataScreen = () => {
       <Header />
       <div className="container page-container">
         <div className="row">
-          <div className="col-md-8">
+          <div className="col-md-12">
             <div className="col-md-12">
-              <h4>Upload data to your company vault</h4>
+              <h4 style={{fontWeight:'700'}}>Upload data to your company vault</h4>
               <p>Data types</p>
             </div>
 
             <div className="row below-section">
-              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${RetailerUser ? "disable-btn-border" : "btn-border"}`}>
+              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2`}>
                 <div className={RetailerUser ? "boxpit" : "box"}>
-                  <label className="file-label">
+                  <label className={`file-label  ${RetailerUser ? "disable-btn-border" : "btn-border"}`}>
                     Distributed Bill of Materials (BOM)
                     <input type="file" accept=".xml" onChange={(e) => setBomFile(e.target.files[0])} style={{ display: "none" }} disabled={RetailerUser} />
-                    {RetailerUser && <span>BOM File Upload disabled for Retailers</span>}
+                    {/* {RetailerUser && <span>BOM File Upload disabled for Retailers</span>} */}
                   </label>
                 </div>
               </div>
 
-              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${eventUser ? "disable-btn-border" : "btn-border"}`}>
+              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 `}>
                 <div className={eventUser ? "boxpit" : "box"}>
-                  <label className="file-label">
+                  <label className={`file-label ${eventUser ? "disable-btn-border" : "btn-border"}`}>
                     Own Events Emission
                     <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} disabled={eventUser} />
                   </label>
                 </div>
               </div>
 
-              <div className="col-12 col-lg-3 btn-border d-flex justify-content-center align-items-center text-center p-2">
+              <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2">
                 <div className="box">
-                  <label className="file-label">
+                  <label className="file-label btn-border">
                     Others
                     <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} />
                   </label>
@@ -227,20 +227,19 @@ const UploadDataScreen = () => {
                 {displayFileName(pdfFile, "pdf")}
               </div>
             </div>
-
+            <div className="page-btn">
+            <button className="btn me-2" onClick={handleUpload}>
+                  Upload
+            </button>
+            </div>
             <div className="row my-4">
               <div className="col-md-12 page-btn">
-                <button className="btn me-2" onClick={handleUpload}>
-                  Upload
-                </button>
+                
                 <button className="btn btn-secondary mt-2" onClick={() => navigate(-1)}>
                   Back
                 </button>
               </div>
             </div>
-          </div>
-          <div className="col-md-4">
-            <iframe src="https://chatui-k5atvf3ecq-ez.a.run.app/" title="Chatbot" width="100%" height="400px"></iframe>
           </div>
         </div>
       </div>

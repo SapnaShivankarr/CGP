@@ -384,7 +384,8 @@ const LaunchCampaign = () => {
                       ))}
                     </div>
                   </div>
-                  <p className="mb-2 mt-4">Product ID (Global Trade Item Number-GTIN)</p>
+                  <p className="mt-2 mb-0">Product ID (Global Trade Item Number-GTIN)</p>
+                  <p>**14 digits are mandatory for below 3 GTIN</p>
 
                   <div className="row mt-2">
                     <div className="col-md-4">
@@ -451,7 +452,7 @@ const LaunchCampaign = () => {
                   </div>
                   {palletuniterr && <p className="ml-2 warnrd">Your Pallet Unit GTIN should be of 14 digits</p>}
 
-                  <div className="mt-2">
+                  <div className="mb-2">
                     <div>Product Name*</div>
                     <div>
                       <input
@@ -470,7 +471,7 @@ const LaunchCampaign = () => {
                     </div>
                   </div>
 
-                  <p className="mb-2 mt-2">Select Global Product Classification*</p>
+                  <p className="mb-2 mt-4">Select Global Product Classification*</p>
                   <select value={isUserPresent ? userData.globalProductClassification : gpcoption} onChange={handleSelectGPC} className="form-select selectoption" required>
                     <option value="" selected hidden>
                       GPC
@@ -482,7 +483,7 @@ const LaunchCampaign = () => {
                     ))}
                   </select>
 
-                  <p className="mb-2 mt-2">Select Supplier*</p>
+                  <p className="mb-2 mt-4">Select Supplier*</p>
                   <select value={isUserPresent ? userData.productSupplier : supplieroption} onChange={handleSelectSupplier} className="form-select selectoption" required>
                     <option value="" selected hidden>
                       GLN + Supplier Name
@@ -494,7 +495,7 @@ const LaunchCampaign = () => {
                     ))}
                   </select>
 
-                  <p className="mb-2 mt-2">Select LCA Term*</p>
+                  <p className="mb-2 mt-4">Select LCA Term*</p>
                   <select value={isUserPresent ? userData.lcaTerm : lcaoption} onChange={handleSelectLCATerm} className="form-select selectoption" required>
                     <option value="" selected hidden>
                       LCA Term
@@ -505,32 +506,6 @@ const LaunchCampaign = () => {
                       </option>
                     ))}
                   </select>
-
-                  <p className="mb-2 mt-2">Locations*</p>
-                  <select value={isUserPresent ? userData.location : daplocationoption} onChange={handleSelectLocation} className="form-select selectoption" required>
-                    <option value="" selected hidden>
-                      DAP Locations
-                    </option>
-                    {dapLocations.map((option) => (
-                      <option key={option.id} value={option.City}>
-                        {option.Country + "-" + option.City}
-                      </option>
-                    ))}
-                  </select>
-
-                  <div className="mt-3">
-                    <p className="mb-2">Calculation Frameworks*</p>
-                    <select value={isUserPresent ? userData.calculationFramework : frameworkoption} onChange={handleSelectFrameworks} className="form-select selectoption mb-4" required>
-                      <option value="" selected hidden>
-                        Select an Option
-                      </option>
-                      {options.map((option) => (
-                        <option key={option.id} value={option.name}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
                 </div>
               </div>
 
@@ -589,8 +564,9 @@ const LaunchCampaign = () => {
             <div className="page-btn">
               <input type="submit" name="submit" value={isUserPresent ? "Save & Next" : "Next"} className="btn" />
             </div>
+            
           </div>
-        </form>
+        </form><div className="mt-4"></div>
       </div>
     </>
   );

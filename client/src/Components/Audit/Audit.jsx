@@ -47,10 +47,10 @@ const Select = () => {
     <>
     <Header />
     <div className="container page-container">
-      <h4>Request for Audit</h4>
+      <h4 style={{fontWeight:'700'}}>Request for Audit</h4>
       <div className="row">
         <div className="col-md-6">
-          <div className="container-fluid mt-5">
+          <div className="container-fluid mt-2">
             <p>
               You've been invited by <span className="highlighted">Campaign Requester</span> to join a secure data platform.
             </p>
@@ -65,17 +65,17 @@ const Select = () => {
               <strong>Selected Frameworks:</strong> CO2 emission calculation for <span className="highlighted">Product Carbon Footprint-GHGP (Scope 1-3)</span>
             </p>
             <div className="row below-section">
-              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2">
+              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2 my-2" style={{width:'100%'}}>
                 <div className="boxing" onClick={() => navigate("/audit")}>
                   Review Campaign for CO2 emission calculation
                 </div>
               </div>
-              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2">
+              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2 my-2" style={{width:'100%'}}>
                 <div className="boxing" onClick={() => navigate("/audit")}>
                   Verify Deforestation Certification
                 </div>
               </div>
-              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2">
+              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2 my-2" style={{width:'100%'}}>
                 <div className="boxing" onClick={() => navigate("/audit")}>
                   Validate Human Rights & Living Wages Compliance
                 </div>
@@ -84,7 +84,7 @@ const Select = () => {
           </div>
         </div>
         <div className="col-md-6">
-          <div className="setModuleHeight">
+          <div className="setModuleHeight setModuleheight">
             <div className="bg-white p-4 rounded text-left">
               <p className="font-weight-bold mb-3">
                 <b>Module</b>
@@ -110,7 +110,7 @@ const Select = () => {
               ))}
               {manufacturerData && (
                 <div className="mt-4 mb-4 text-center">
-                  <img src="https://img.freepik.com/free-photo/tomato-saup-with-basil-bowl_114579-11606.jpg?w=300" alt="Manufacturer Logo" />
+                  <img src="https://img.freepik.com/free-photo/tomato-saup-with-basil-bowl_114579-11606.jpg?w=300" style={{width:'300'}} alt="Manufacturer Logo" />
                 </div>
               )}
             </div>

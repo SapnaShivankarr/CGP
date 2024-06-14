@@ -49,11 +49,11 @@ const Signup = () => {
   };
 
   return (
-    <div class="wrapper login">
-      <div class="container-cpg">
+    <div className="wrapper login">
+      <div className="container-cpg">
         <div className="row">
-          <div class="col-lg-6 col-12 col-left login-container">
-            <div class="login-text">
+          <div className="col-lg-6 col-12 col-left login-container">
+            <div className="login-text">
               <h2>Fractals</h2>
               <p>Sustainability data collaboration in the end-to-end consumer goods value chain!</p>{" "}
               <a href="/" className="btn">
@@ -61,8 +61,8 @@ const Signup = () => {
               </a>
             </div>
           </div>
-          <div class="col-lg-6 col-12 col-right">
-            <div class="login-form">
+          <div className="col-lg-6 col-12 col-right">
+            <div className="login-form">
               <h2>Sign Up</h2>
               {error && <p className="text-danger text-center">{error}</p>}
               <form action="">

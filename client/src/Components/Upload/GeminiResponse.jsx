@@ -175,13 +175,13 @@ const GeminiResponse = () => {
       <Header />
       <div className="container page-container">
         <div className="col-12 custom-calculated-results" style={{ marginBottom: "4rem" }}>
-          <div className="gemini-container" style={{ border: "12px double gray", borderRadius: "10px", padding: "20px" }}>
+          <div className="gemini-container">
             <div className="gemini-header">
               <span className="gemini-logo">
-                <h4>Gemini</h4>
+                <h4 style={{fontWeight:'700'}}>Please find the below response from the AI</h4>
               </span>
             </div>
-            <div className="gemini-content">
+            <div className="gemini-content mt-4">
               {falsecount === 0 ? (
                 <>
                   {Object.keys(presentdata).length !== 0 ? (
@@ -224,13 +224,17 @@ const GeminiResponse = () => {
         </div>
         <div>
           {falsecount === 0 ? (
-            <button className="page-btn" onClick={handleSuccess}>
+            <div className="page-btn">
+            <button className="btn" onClick={handleSuccess}>
               Next
             </button>
+            </div>
           ) : (
-            <button className="page-btn" onClick={handleOnClick}>
+            <div className="page-btn">
+            <button className="btn" onClick={handleOnClick}>
               Try Again
             </button>
+            </div>
           )}
         </div>
       </div>

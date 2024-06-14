@@ -43,18 +43,18 @@ function Header() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
   return (
-    <header class="header">
-      <div class="app-name">Fractals</div>
-      <div class="user-controls">
-        <button type="button" className="btn btn-primary" onClick={handleShowModal}>
-          Launch demo modal
+    <header className="header">
+      <div className="app-name">Fractals</div>
+      <div className="user-controls">
+        <button type="button" className="bg-btn" style={{background:'unset',marginRight:'2rem'}} onClick={handleShowModal}>
+          Help
         </button>
 
         <CustomModal show={showModal} handleClose={handleCloseModal} title="Fractals Chatbot">
           <p>...</p>
         </CustomModal>
-        <div class="username">{loggedInUser}</div>
-        <button class="logout-button" onClick={handleLogout}>
+        <div className="username">{loggedInUser}</div>
+        <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>
       </div>
