@@ -3,6 +3,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import Header from "../Header/Header";
 import { useNavigate } from "react-router-dom";
+import Loading from "../Loading/Loading";
 
 const Share = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Share = () => {
   const [alcal, setAlCal] = useState(true);
   const [shmarketplace, setShMarketPlace] = useState(true);
   const [CampaignInfo, setCampaign] = useState("");
+  const [lazy, setLazy] = useState(true);
   const defaultImage = "https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg?w=140&t=st=1718346796~exp=1718347396~hmac=e939e86149aef1f72f928bfd38f79f4d975bf060c59c6f5270579613219daa93";
 
   useEffect(() => {
@@ -28,6 +30,7 @@ const Share = () => {
         const response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/${getfinalId}`);
 
         if (response.status === 200) {
+          setLazy(false);
           setCampaign(response.data.responseData);
         } else {
           throw new Error(`Unexpected response status: ${response.status}`);
@@ -53,17 +56,26 @@ const Share = () => {
     setShMarketPlace(!ini);
   };
 
+  if (lazy) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
       <div className="container page-container">
-        <h4 style={{fontWeight:'700'}}>Share calculated data</h4>
+        <h4 style={{ fontWeight: "700" }}>Share calculated data</h4>
         <p className="font-weight-bold mb-3">Choose where to share data</p>
         <div className="row">
           <div className="col-md-4">
             <div className="bg-white mb-3 rounded text-left">
               <div className="mb-4 p-2">
-                <img src={CampaignInfo.imageData ? `data:image/jpg;base64,${CampaignInfo.imageData}` : defaultImage} alt="Manufacturer Logo" style={{width:'200px'}} className="mb-3" />
+                <img src={CampaignInfo.imageData ? `data:image/jpg;base64,${CampaignInfo.imageData}` : defaultImage} alt="Manufacturer Logo" style={{ width: "200px" }} className="mb-3" />
                 <p className="mt-2">
                   <b>Campaign ID:</b> {CampaignInfo ? `${CampaignInfo.id}` : "Default Id"}
                 </p>

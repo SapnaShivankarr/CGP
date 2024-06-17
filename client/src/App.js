@@ -12,6 +12,7 @@ import Header from "./Components/Header/Header";
 import Audit from "./Components/Audit/Audit";
 import GeminiResponse from "./Components/Upload/GeminiResponse";
 import "../src/CommonStyle/style.css";
+import HelpButtonWithModal from "./Components/Help/Help";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,6 +49,7 @@ function App() {
           </>
         )}
       </Routes>
+      <HelpButtonWithModal />
     </div>
   );
 }

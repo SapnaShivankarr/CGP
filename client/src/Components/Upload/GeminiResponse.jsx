@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
+import Loading from "../Loading/Loading";
 
 const GeminiResponse = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const GeminiResponse = () => {
   const [falsecount, setFalseCount] = useState(0);
   const [presentdata, setPresentData] = useState({});
   const [userType, setUserType] = useState("");
+  const [lazy, setLazy] = useState(true);
 
   useEffect(() => {
     const fetchDate = async () => {
@@ -39,6 +41,7 @@ const GeminiResponse = () => {
         }
 
         if (response.status === 200) {
+          setLazy(false);
           console.log("API Response Data:", response.data);
 
           // Split the response data by newline character to get individual JSON strings
@@ -105,6 +108,7 @@ const GeminiResponse = () => {
   };
 
   const handleSuccess = async (e) => {
+    setLazy(true);
     e.preventDefault();
     const filename = document.cookie
       .split(";")
@@ -170,6 +174,15 @@ const GeminiResponse = () => {
     }
   };
 
+  if (lazy) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
@@ -178,7 +191,7 @@ const GeminiResponse = () => {
           <div className="gemini-container">
             <div className="gemini-header">
               <span className="gemini-logo">
-                <h4 style={{fontWeight:'700'}}>Please find the below response from the AI</h4>
+                <h4 style={{ fontWeight: "700" }}>Please find the below response from the AI</h4>
               </span>
             </div>
             <div className="gemini-content mt-4">
@@ -225,15 +238,15 @@ const GeminiResponse = () => {
         <div>
           {falsecount === 0 ? (
             <div className="page-btn">
-            <button className="btn" onClick={handleSuccess}>
-              Next
-            </button>
+              <button className="btn" onClick={handleSuccess}>
+                Next
+              </button>
             </div>
           ) : (
             <div className="page-btn">
-            <button className="btn" onClick={handleOnClick}>
-              Try Again
-            </button>
+              <button className="btn" onClick={handleOnClick}>
+                Try Again
+              </button>
             </div>
           )}
         </div>

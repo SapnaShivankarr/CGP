@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "../Header/Header";
+import Loading from "../Loading/Loading";
 
 const ActionsScreen = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
+  const [lazy, setLazy] = useState(true);
 
   useEffect(() => {
     fetchUserName();
@@ -20,6 +22,7 @@ const ActionsScreen = () => {
     try {
       const response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/all/${username}`);
       if (response.status === 200) {
+        setLazy(false);
         const userCampaigns = response.data.responseData.filter((option) => option.assignedTo === username);
         console.log(username);
         console.log(userCampaigns);
@@ -37,11 +40,20 @@ const ActionsScreen = () => {
     navigate(path);
   };
 
+  if (lazy) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
       <div className="container page-container">
-        <h4 style={{fontWeight:'700'}}>Campaign Invitation</h4>
+        <h4 style={{ fontWeight: "700" }}>Campaign Invitation</h4>
         <p className="mt-4">
           You've been invited by <span className="highlighted">{userName.createdBy}</span> to join a secure data platform.
         </p>
@@ -62,17 +74,17 @@ const ActionsScreen = () => {
         </p>
 
         <div className="row below-section">
-          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'250px'}}>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{ width: "250px" }}>
             <div className="box btn w-100" onClick={() => goToPage("/review")}>
               Review Campaign
             </div>
           </div>
-          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'250px'}}>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{ width: "250px" }}>
             <div className="box btn w-100" onClick={() => goToPage("/upload")}>
               Upload Data to Your Company Vault
             </div>
           </div>
-          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'250px'}}>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{ width: "250px" }}>
             <div className="box btn w-100" onClick={() => goToPage("/share")}>
               Share Campaign with Suppliers
             </div>

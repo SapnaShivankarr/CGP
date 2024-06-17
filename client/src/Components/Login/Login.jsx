@@ -3,14 +3,18 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css";
+import Loading from "../Loading/Loading";
+import Header from "../Header/Header";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [lazy, setLazy] = useState(false);
 
   const handleLogin = async () => {
+    setLazy(true);
     setError("");
     try {
       if (!username || !password) {
@@ -54,6 +58,14 @@ const Login = () => {
       }
     }
   };
+  if (lazy) {
+    return (
+      <div>
+        <Header />
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="wrapper login">

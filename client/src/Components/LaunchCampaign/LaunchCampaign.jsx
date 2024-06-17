@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import "./LaunchCampaign.css";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
+import Loading from "../Loading/Loading";
 
 const LaunchCampaign = () => {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ const LaunchCampaign = () => {
   const [isUserPresent, setUserPresent] = useState(false);
   const [userData, setUserData] = useState(true);
   const [campaignString, setCampaignString] = useState("");
+  const [lazy, setLazy] = useState(false);
+  const [isopen, setOpen] = useState(false);
 
   const [campaignoptions, setCampaignOptions] = useState([
     { id: 1, name: "Product Carbon Footprint", checked: true },
@@ -79,9 +82,11 @@ const LaunchCampaign = () => {
       try {
         let response;
         if (getIdforsearch) {
+          setLazy(true);
           response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/${getIdforsearch}`);
 
           if (response.status === 200) {
+            setLazy(false);
             setUserPresent(true);
             console.log(response.data.responseData);
             setUserData(response.data.responseData);
@@ -215,6 +220,7 @@ const LaunchCampaign = () => {
   };
 
   const handleNext = async (event) => {
+    setLazy(true);
     event.preventDefault(); // Prevent form submission
 
     const selectedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked);
@@ -334,6 +340,7 @@ const LaunchCampaign = () => {
   };
 
   const completeEdit = async (event) => {
+    setLazy(true);
     event.preventDefault();
     const selectedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked);
     const strimp = selectedCheckboxes.map((option) => option.name).join(", ");
@@ -355,6 +362,19 @@ const LaunchCampaign = () => {
     }
   };
 
+  const handleOpen = (e) => {
+    e.preventDefault();
+    setOpen((prev) => !prev);
+  };
+  if (lazy) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
@@ -370,10 +390,10 @@ const LaunchCampaign = () => {
                   </div>
                   <p className="mb-2 mt-4">Select Campaign*</p>
                   <div className="custom-dropdown">
-                    <button className="form-select mb-1 selectoption" style={{ textAlign: "left" }} type="button">
+                    <button className="form-select mb-1 selectoption" style={{ textAlign: "left" }} type="button" onClick={handleOpen}>
                       {selectedOption || "Product Carbon Footprint"}
                     </button>
-                    <div className="dropdown-content">
+                    <div className={`dropdown-content ${isopen ? "show" : ""}`}>
                       {campaignoptions.map((option) => (
                         <div key={option.id} className="dropdown-item">
                           <input className="form-check-input mgr" type="checkbox" checked={option.checked} onChange={() => handleCheckboxChange(option.id)} id={`checkbox-${option.id}`} />
@@ -506,6 +526,18 @@ const LaunchCampaign = () => {
                       </option>
                     ))}
                   </select>
+
+                  <p className="mb-2 mt-4">Select Calculation Framework*</p>
+                  <select value={isUserPresent ? userData.calculationFramework : frameworkoption} onChange={handleSelectFrameworks} className="form-select selectoption" required>
+                    <option value="" selected hidden>
+                      Calculation Framework
+                    </option>
+                    {options.map((option) => (
+                      <option key={option.id} value={option.name}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
@@ -564,9 +596,9 @@ const LaunchCampaign = () => {
             <div className="page-btn">
               <input type="submit" name="submit" value={isUserPresent ? "Save & Next" : "Next"} className="btn" />
             </div>
-            
           </div>
-        </form><div className="mt-4"></div>
+        </form>
+        <div className="mt-4"></div>
       </div>
     </>
   );
