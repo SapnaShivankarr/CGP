@@ -32,23 +32,25 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        {isAuthenticated && (
-          <>
-            <Route path="/campaign" element={<LaunchCampaign />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/share" element={<Share />} />
-            <Route path="/header" element={<Header />} />
-            <Route path="/invitation" element={<Campaigninvitation />} />
-            <Route path="/review" element={<ReviewCampaign />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/audit" element={<Audit />} />
-            <Route path="/response" element={<GeminiResponse />} />
-          </>
-        )}
-      </Routes>
+      <div className="main-content">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          {isAuthenticated && (
+            <>
+              <Route path="/campaign" element={<LaunchCampaign />} />
+              <Route path="/upload" element={<Upload />} />
+              <Route path="/share" element={<Share />} />
+              <Route path="/header" element={<Header />} />
+              <Route path="/invitation" element={<Campaigninvitation />} />
+              <Route path="/review" element={<ReviewCampaign />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/audit" element={<Audit />} />
+              <Route path="/response" element={<GeminiResponse />} />
+            </>
+          )}
+        </Routes>
+      </div>
       <HelpButtonWithModal />
     </div>
   );

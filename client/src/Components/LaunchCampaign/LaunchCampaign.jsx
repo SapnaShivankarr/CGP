@@ -220,7 +220,6 @@ const LaunchCampaign = () => {
   };
 
   const handleNext = async (event) => {
-    setLazy(true);
     event.preventDefault(); // Prevent form submission
 
     const selectedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked);
@@ -252,78 +251,82 @@ const LaunchCampaign = () => {
       setPalletUniterr(false);
     }
 
-    if (hasError) {
-      setTimeout(() => {
-        setErrorCheck(false);
-        setBaseUniterr(false);
-        setCaseUniterr(false);
-        setPalletUniterr(false);
-      }, 2000);
-      return;
-    }
+    // if (hasError) {
+    //   setTimeout(() => {
+    //     setErrorCheck(false);
+    //     setBaseUniterr(false);
+    //     setCaseUniterr(false);
+    //     setPalletUniterr(false);
+    //   }, 2000);
+    //   return;
+    // }
 
-    const strimp = selectedCheckboxes.map((option) => option.name).join(", ");
+    if (!hasError) {
+      setLazy(true);
 
-    const getCookie = (name) => {
-      const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-      if (match) return match[2];
-      return null;
-    };
+      const strimp = selectedCheckboxes.map((option) => option.name).join(", ");
 
-    const userName = getCookie("username");
-    const userType = getCookie("usertype");
-    const userBucketPath = getCookie("userbucketpath");
-    const encryptedBucketPath = getCookie("encryptedbucketpath");
-    const finalResultBucketPath = getCookie("finalresultbucketpath");
-    const active = getCookie("active");
+      const getCookie = (name) => {
+        const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+        if (match) return match[2];
+        return null;
+      };
 
-    const loginResponseDTO = {
-      userName: userName,
-      userType: userType,
-      userBucketPath: userBucketPath,
-      encryptdBucketPath: encryptedBucketPath,
-      finalResultBucketPath: finalResultBucketPath,
-      active: active,
-    };
+      const userName = getCookie("username");
+      const userType = getCookie("usertype");
+      const userBucketPath = getCookie("userbucketpath");
+      const encryptedBucketPath = getCookie("encryptedbucketpath");
+      const finalResultBucketPath = getCookie("finalresultbucketpath");
+      const active = getCookie("active");
 
-    const campaignFileRequestDTO = {
-      campaignTypes: strimp,
-      productBaseUnitGTIN: baseunitGTIN,
-      productCaseGTIN: caseunitGTIN,
-      productPalletGTIN: palletunitGTIN,
-      productName: productNameCampaign,
-      globalProductClassification: gpcoption,
-      productSupplier: supplieroption,
-      lcaTerm: lcaoption,
-      location: daplocationoption,
-      calculationFramework: frameworkoption,
-      auditor: "Impact Buying",
-      assignedTo: supplieroption,
-    };
-    console.log(loginResponseDTO);
-    console.log(campaignFileRequestDTO);
-    console.log(imagefile);
+      const loginResponseDTO = {
+        userName: userName,
+        userType: userType,
+        userBucketPath: userBucketPath,
+        encryptdBucketPath: encryptedBucketPath,
+        finalResultBucketPath: finalResultBucketPath,
+        active: active,
+      };
 
-    const formData = new FormData();
-    formData.append("file", imagefile);
-    formData.append("campaignFileRequestDTO", new Blob([JSON.stringify(campaignFileRequestDTO)], { type: "application/json" }));
-    formData.append("loginResponseDTO", new Blob([JSON.stringify(loginResponseDTO)], { type: "application/json" }));
+      const campaignFileRequestDTO = {
+        campaignTypes: strimp,
+        productBaseUnitGTIN: baseunitGTIN,
+        productCaseGTIN: caseunitGTIN,
+        productPalletGTIN: palletunitGTIN,
+        productName: productNameCampaign,
+        globalProductClassification: gpcoption,
+        productSupplier: supplieroption,
+        lcaTerm: lcaoption,
+        location: daplocationoption,
+        calculationFramework: frameworkoption,
+        auditor: "Impact Buying",
+        assignedTo: supplieroption,
+      };
+      console.log(loginResponseDTO);
+      console.log(campaignFileRequestDTO);
+      console.log(imagefile);
 
-    try {
-      const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const formData = new FormData();
+      formData.append("file", imagefile);
+      formData.append("campaignFileRequestDTO", new Blob([JSON.stringify(campaignFileRequestDTO)], { type: "application/json" }));
+      formData.append("loginResponseDTO", new Blob([JSON.stringify(loginResponseDTO)], { type: "application/json" }));
 
-      if (response.status === 200) {
-        console.log(response);
-        document.cookie = `CampaignId=${response.data.responseData.id}; path=/`;
-        const imageBase64 = encodeURIComponent(response.data.responseData.imageData);
-        console.log(imageBase64);
-        sessionStorage.setItem("uploadedImageData", imageBase64);
-        navigate("/upload");
+      try {
+        const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (response.status === 200) {
+          console.log(response);
+          document.cookie = `CampaignId=${response.data.responseData.id}; path=/`;
+          const imageBase64 = encodeURIComponent(response.data.responseData.imageData);
+          console.log(imageBase64);
+          sessionStorage.setItem("uploadedImageData", imageBase64);
+          navigate("/upload");
+        }
+      } catch (error) {
+        console.error("Error submitting the form: ", error);
       }
-    } catch (error) {
-      console.error("Error submitting the form: ", error);
     }
   };
 
@@ -570,8 +573,14 @@ const LaunchCampaign = () => {
                       )}
                       {!manufacturerData && (
                         <div className="mt-4 mb-4 mx-4">
-                          {!imagePreviewUrl && <input type="file" className="form-control tooltip-test" title="Please upload a Jpeg or Png file" id="file" accept=".jpg, .jpeg, .png" required onChange={handleImageChange} />}
+                          {!imagePreviewUrl && (
+                            <>
+                              <input type="file" className="form-control tooltip-test" title="Please upload a .jpeg or .png file" id="file" accept=".jpg, .jpeg, .png" required onChange={handleImageChange} />
+                              <p>*Please upload a .jpeg or .png file</p>
+                            </>
+                          )}
                           {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" className="img-fluid" />}
+
                           <br />
                         </div>
                       )}

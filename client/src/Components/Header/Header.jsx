@@ -37,7 +37,15 @@ function Header() {
     document.cookie = "nooffiles=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "manufactureevent=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "manufacturebom=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "chatshow=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     sessionStorage.removeItem("uploadedImageData");
+    sessionStorage.removeItem("GeminiPresentInfo");
+    sessionStorage.removeItem("GeminiResponseAbsent");
+    sessionStorage.removeItem("FalseCount");
+    const mainContent = document.querySelector(".main-content");
+    if (mainContent) {
+      mainContent.classList.remove("shift-left");
+    }
     navigate("/");
   };
   const handleShowModal = () => setShowModal(true);
@@ -46,7 +54,7 @@ function Header() {
     <header className="header">
       <div className="app-name">Fractals</div>
       <div className="user-controls">
-        <button type="button" className="bg-btn" style={{background:'unset',marginRight:'2rem'}} onClick={handleShowModal}>
+        <button type="button" className="bg-btn" style={{ background: "unset", marginRight: "2rem" }} onClick={handleShowModal}>
           Help
         </button>
 

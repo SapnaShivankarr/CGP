@@ -62,14 +62,14 @@ const ActionsScreen = () => {
           <span className="highlighted">{userName.id}</span>
         </p>
         <p>
-          <strong>Name: </strong> CO2 emission calculation for
+          <strong>Name: </strong> CO<sub>2</sub> emission calculation for
           <span className="highlighted">
             {" "}
-            {userName.productBaseUnitGTIN}, {userName.productCaseGTIN}, {userName.productPalletGTIN} - {userName.productName}
+            {userName.productBaseUnitGTIN}-(Base Unit GTIN), {userName.productCaseGTIN}-(Case Unit GTIN), {userName.productPalletGTIN}-(Pallet Unit GTIN), {userName.productName}-(Product Name)
           </span>
         </p>
         <p>
-          <strong>Selected Frameworks: </strong> CO2 emission calculation for
+          <strong>Selected Frameworks: </strong> CO<sub>2</sub> emission calculation for
           <span className="highlighted"> {userName.calculationFramework}</span>
         </p>
 

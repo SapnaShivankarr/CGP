@@ -13,8 +13,9 @@ const Share = () => {
   ]);
   const [alcal, setAlCal] = useState(true);
   const [shmarketplace, setShMarketPlace] = useState(true);
-  const [CampaignInfo, setCampaign] = useState("");
+  const [campaignInfo, setCampaignInfo] = useState(null);
   const [lazy, setLazy] = useState(true);
+  const [emissionResult, setEmissionResult] = useState(null);
   const defaultImage = "https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg?w=140&t=st=1718346796~exp=1718347396~hmac=e939e86149aef1f72f928bfd38f79f4d975bf060c59c6f5270579613219daa93";
 
   useEffect(() => {
@@ -28,10 +29,32 @@ const Share = () => {
         }
 
         const response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/${getfinalId}`);
+        const usertype = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("usertype="));
+        const usertypeValue = usertype ? usertype.split("=")[1] : "";
+
+        if (usertypeValue.toLowerCase() === "manufacturer") {
+          const response1 = await axios.get(`http://localhost:9001/event-service/api/v1/event/manufacturer/${getfinalId}`);
+          // const response2 = await axios.get(`http://localhost:9001/event-service/api/v1/bom/manufacturer/${getfinalId}`);
+          if (response1.data.responseStatus.responseCode === 0) {
+            const lastEvent = response1.data.responseData[0].componentusecategory === "Product" ? response1.data.responseData[0].lcaindicatorvalue : "";
+            const lastBOM = response1.data.responseData[1].componentusecategory === "Product" ? response1.data.responseData[1].lcaindicatorvalue : "";
+            console.log(lastEvent);
+            console.log(lastBOM);
+            console.log(parseFloat(lastEvent) + parseFloat(lastBOM));
+            setEmissionResult(parseFloat(lastEvent) + parseFloat(lastBOM));
+          }
+        } else {
+          const response3 = await axios.get(`http://localhost:9001/event-service/api/v1/event/retailer/${getfinalId}`);
+          if (response3.data.responseStatus.responseCode === 0) {
+            const lastEvent = response3.data.responseData[response3.data.responseData.length - 1].lcaindicatorvalue;
+            console.log(lastEvent);
+            setEmissionResult(lastEvent);
+          }
+        }
 
         if (response.status === 200) {
           setLazy(false);
-          setCampaign(response.data.responseData);
+          setCampaignInfo(response.data.responseData);
         } else {
           throw new Error(`Unexpected response status: ${response.status}`);
         }
@@ -44,16 +67,14 @@ const Share = () => {
 
   const handleCheckboxChange = (id) => {
     setCampaignRequestCheckboxes((prevCheckboxes) => prevCheckboxes.map((checkbox) => (checkbox.id === id ? { ...checkbox, checked: !checkbox.checked } : checkbox)));
-    let zx = campaignRequestCheckboxes;
-    console.log(zx);
   };
 
-  const handleCheckboxCal = (ini) => {
-    setAlCal(!ini);
+  const handleCheckboxCal = () => {
+    setAlCal((prev) => !prev);
   };
 
-  const handleCheckboxshmp = (ini) => {
-    setShMarketPlace(!ini);
+  const handleCheckboxshmp = () => {
+    setShMarketPlace((prev) => !prev);
   };
 
   if (lazy) {
@@ -75,17 +96,16 @@ const Share = () => {
           <div className="col-md-4">
             <div className="bg-white mb-3 rounded text-left">
               <div className="mb-4 p-2">
-                <img src={CampaignInfo.imageData ? `data:image/jpg;base64,${CampaignInfo.imageData}` : defaultImage} alt="Manufacturer Logo" style={{ width: "200px" }} className="mb-3" />
+                <img src={campaignInfo && campaignInfo.imageData ? `data:image/jpg;base64,${campaignInfo.imageData}` : defaultImage} alt="Manufacturer Logo" style={{ width: "200px" }} className="mb-3" />
                 <p className="mt-2">
-                  <b>Campaign ID:</b> {CampaignInfo ? `${CampaignInfo.id}` : "Default Id"}
+                  <b>Campaign ID:</b> {campaignInfo ? `${campaignInfo.id}` : "Default Id"}
                 </p>
                 <p className="mt-2">
-                  <b>Product:</b>
-                  {CampaignInfo ? `${CampaignInfo.productName}` : "Default Id"}
+                  <b>Product:</b> {campaignInfo ? `${campaignInfo.productName}` : "Default Id"}
                 </p>
                 <p>Results</p>
                 <p className="mt-2">
-                  <b>5.03kg C02e/kg</b> (GHCP)
+                  <b>{emissionResult ? emissionResult : ""} kg CO2e/kg</b> (GHCP)
                 </p>
                 <p>
                   Supply Chain <a href="https://google.com"> Map</a>
@@ -105,7 +125,7 @@ const Share = () => {
                 </p>
                 <div className="d-flex justify-content-between mx-4 mb-3">
                   <label htmlFor="alcd">Allow others to calculate on this data?</label>
-                  <input className="form-check-input" type="checkbox" checked={alcal} onChange={() => handleCheckboxCal(alcal)} id="alcd" />
+                  <input className="form-check-input" type="checkbox" checked={alcal} onChange={handleCheckboxCal} id="alcd" />
                 </div>
 
                 <p className="font-weight-bold mb-1 linkclick">
@@ -131,7 +151,7 @@ const Share = () => {
                 </p>
                 <div className="d-flex justify-content-between mx-4">
                   <label htmlFor="shmp">Allow others to calculate on this data?</label>
-                  <input className="form-check-input" type="checkbox" checked={shmarketplace} onChange={() => handleCheckboxshmp(shmarketplace)} id="shmp" />
+                  <input className="form-check-input" type="checkbox" checked={shmarketplace} onChange={handleCheckboxshmp} id="shmp" />
                 </div>
               </div>
             </div>

@@ -22,6 +22,7 @@ const UploadDataScreen = () => {
   const [finalResultBucketPath, setFinalResultBucketPath] = useState("");
   const [active, setActive] = useState(true);
   const [eventUser, setEventUser] = useState(false);
+  const [campaignIdEntered, setCampaignIdEntered] = useState("");
 
   useEffect(() => {
     const getCookieValue = (name) => {
@@ -31,6 +32,8 @@ const UploadDataScreen = () => {
 
     const usertype = getCookieValue("usertype");
     setUserType(usertype);
+    const campaignid = getCookieValue("CampaignId");
+    setCampaignIdEntered(campaignid);
     if (usertype.toLowerCase() === "retailer") {
       setRetailerUser(true);
     }
@@ -140,6 +143,9 @@ const UploadDataScreen = () => {
       }
 
       window.alert("Files uploaded successfully!");
+      sessionStorage.removeItem("GeminiPresentInfo");
+      sessionStorage.removeItem("GeminiResponseAbsent");
+      sessionStorage.removeItem("FalseCount");
       navigate("/response");
     } catch (error) {
       console.error("Error uploading files:", error);
@@ -186,9 +192,14 @@ const UploadDataScreen = () => {
         <div className="row">
           <div className="col-md-12">
             <div className="col-md-12">
-              <h4 style={{fontWeight:'700'}}>Upload data to your company vault</h4>
+              <h4 style={{ fontWeight: "700" }}>Upload data to your company vault</h4>
               <p>Data types</p>
               {userType.toLowerCase() === "manufacturer" ? <p>You have to upload both BOM and Event File</p> : ""}
+              {
+                <p>
+                  Your CampaignId Id is <b>{campaignIdEntered}</b>.Please Upload your xml files with the Correct CampaignId{" "}
+                </p>
+              }
             </div>
 
             <div className="row below-section">
@@ -229,13 +240,12 @@ const UploadDataScreen = () => {
               </div>
             </div>
             <div className="page-btn">
-            <button className="btn me-2" onClick={handleUpload}>
-                  Upload
-            </button>
+              <button className="btn me-2" onClick={handleUpload}>
+                Upload
+              </button>
             </div>
             <div className="row my-4">
               <div className="col-md-12 page-btn">
-                
                 <button className="btn btn-secondary mt-2" onClick={() => navigate(-1)}>
                   Back
                 </button>

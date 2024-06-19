@@ -49,7 +49,8 @@ body {
   box-shadow: 0 0 5px #999999;
 }
 
-.btn, .bg-btn {
+.btn,
+.bg-btn {
   display: inline-block;
   padding: 7px 20px;
   font-size: 16px;
@@ -60,28 +61,29 @@ body {
   outline: none;
   border: 1px solid #ffffff;
   box-shadow: inset 0 0 0 0 #ffffff;
-  transition: .3s;
+  transition: 0.3s;
 }
 
-.btn:hover, .bg-btn:hover {
+.btn:hover,
+.bg-btn:hover {
   color: #2aa15f;
   box-shadow: inset 150px 0 0 0 #ffffff;
 }
 button.btn,
-input[type=submit],
-select[type=submit]{
-    display: inline-block;
-    width: 100%;
-    margin-top: 5px;
-    color: #2aa15f;
-    font-size: 16px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    background: transparent;
-    border: 1px solid #2aa15f;
-    border-radius: 30px;
-    box-shadow: inset 0 0 0 0 #2aa15f;
-    transition: .3s;
+input[type="submit"],
+select[type="submit"] {
+  display: inline-block;
+  width: 100%;
+  margin-top: 5px;
+  color: #2aa15f;
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid #2aa15f;
+  border-radius: 30px;
+  box-shadow: inset 0 0 0 0 #2aa15f;
+  transition: 0.3s;
 }
 .page-btn .btn {
   padding: 7px 20px;
@@ -95,14 +97,15 @@ select[type=submit]{
   border: 1px solid #2aa15f;
   border-radius: 30px;
   box-shadow: inset 0 0 0 0 #2aa15f;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 button.btn:hover,
-input[type=submit]:hover,
-select[type=submit]:hover, .page-btn .btn:hover {
-    color: #ffffff;
-    box-shadow: inset 250px 0 0 0 #2aa15f;
+input[type="submit"]:hover,
+select[type="submit"]:hover,
+.page-btn .btn:hover {
+  color: #ffffff;
+  box-shadow: inset 250px 0 0 0 #2aa15f;
 }
 .form-control:focus,
 .form-select:focus {
@@ -167,4 +170,28 @@ select[type=submit]:hover, .page-btn .btn:hover {
   color: #fff;
   font-weight: 600;
   padding: 0.9rem;
+}
+
+.with-vertical-line {
+  display: flex;
+}
+
+.with-vertical-line .col-md-6 {
+  position: relative;
+  width: 50%;
+}
+
+.with-vertical-line .col-md-6:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  background: #000;
+}
+
+.main-content {
+  transition: transform 0.3s ease;
+  z-index: 500;
 }

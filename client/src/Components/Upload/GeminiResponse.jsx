@@ -79,7 +79,18 @@ const GeminiResponse = () => {
       }
     };
 
-    fetchDate();
+    const storedPresentData = sessionStorage.getItem("GeminiPresentInfo");
+    const storedFinalData = sessionStorage.getItem("GeminiResponseAbsent");
+    const falsecnt = sessionStorage.getItem("FalseCount");
+
+    if (storedPresentData && storedFinalData) {
+      setLazy(false);
+      setPresentData(JSON.parse(storedPresentData));
+      setFinalData(JSON.parse(storedFinalData));
+      setFalseCount(falsecnt);
+    } else {
+      fetchDate();
+    }
   }, []);
 
   const determineUserType = () => {
@@ -101,13 +112,16 @@ const GeminiResponse = () => {
 
   const handleOnClick = (e) => {
     e.preventDefault();
+    sessionStorage.setItem("GeminiPresentInfo", JSON.stringify(presentdata));
+    sessionStorage.setItem("GeminiResponseAbsent", JSON.stringify(finaldata));
+    sessionStorage.setItem("FalseCount", falsecount);
     navigate("/upload");
-    setInitialData({});
-    setFinalData({});
-    setFalseCount(0);
   };
 
   const handleSuccess = async (e) => {
+    sessionStorage.setItem("GeminiPresentInfo", JSON.stringify(presentdata));
+    sessionStorage.setItem("GeminiResponseAbsent", JSON.stringify(finaldata));
+    sessionStorage.setItem("FalseCount", falsecount);
     setLazy(true);
     e.preventDefault();
     const filename = document.cookie
@@ -191,11 +205,11 @@ const GeminiResponse = () => {
           <div className="gemini-container">
             <div className="gemini-header">
               <span className="gemini-logo">
-                <h4 style={{ fontWeight: "700" }}>Please find the below response from the AI</h4>
+                <h4 style={{ fontWeight: "700" }}>Please find the below response from Gemini</h4>
               </span>
             </div>
             <div className="gemini-content mt-4">
-              {falsecount === 0 ? (
+              {falsecount === 0 || falsecount === "0" ? (
                 <>
                   {Object.keys(presentdata).length !== 0 ? (
                     <>
@@ -217,26 +231,35 @@ const GeminiResponse = () => {
                   <p>
                     <b>Sorry, your Data Uploaded does not contain the below fields. Please re-upload your file.</b>
                   </p>
-                  <ul>
-                    {Object.keys(finaldata).map((key) => (
-                      <li key={key}>{key}</li>
-                    ))}
-                  </ul>
-                  <p>
-                    <b>Below is the Data Available in the document:</b>
-                  </p>
-                  <ul>
-                    {Object.keys(presentdata).map((key) => (
-                      <li key={key}>{key}</li>
-                    ))}
-                  </ul>
+                  <div className="row with-vertical-line">
+                    <div className="col-md-6">
+                      <p>
+                        <b>Below is the Data Available in the document:</b>
+                      </p>
+                      <ul>
+                        {Object.keys(presentdata).map((key) => (
+                          <li key={key}>{key}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="col-md-6">
+                      <p>
+                        <b>Data Not Available in the document:</b>
+                      </p>
+                      <ul>
+                        {Object.keys(finaldata).map((key) => (
+                          <li key={key}>{key}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </>
               )}
             </div>
           </div>
         </div>
         <div>
-          {falsecount === 0 ? (
+          {falsecount === 0 || falsecount === "0" ? (
             <div className="page-btn">
               <button className="btn" onClick={handleSuccess}>
                 Next
