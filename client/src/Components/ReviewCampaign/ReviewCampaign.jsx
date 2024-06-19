@@ -3,10 +3,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../Header/Header";
+import Loading from "../Loading/Loading";
 
 function Upload() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
+  const [lazy, setLazy] = useState(true);
 
   useEffect(() => {
     fetchUserName();
@@ -20,6 +22,7 @@ function Upload() {
     try {
       const response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/${userId}`);
       if (response.status === 200) {
+        setLazy(false);
         setUserName(response.data.responseData);
       }
     } catch (error) {
@@ -34,6 +37,15 @@ function Upload() {
   //   setTitle(loginname.split("=")[1]);
   // }
   // console.log(loginname.split("=")[1]);
+
+  if (lazy) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
 
   return (
     <>

@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import "./LaunchCampaign.css";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
+import Loading from "../Loading/Loading";
 
 const LaunchCampaign = () => {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ const LaunchCampaign = () => {
   const [isUserPresent, setUserPresent] = useState(false);
   const [userData, setUserData] = useState(true);
   const [campaignString, setCampaignString] = useState("");
+  const [lazy, setLazy] = useState(false);
+  const [isopen, setOpen] = useState(false);
 
   const [campaignoptions, setCampaignOptions] = useState([
     { id: 1, name: "Product Carbon Footprint", checked: true },
@@ -79,9 +82,11 @@ const LaunchCampaign = () => {
       try {
         let response;
         if (getIdforsearch) {
+          setLazy(true);
           response = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/${getIdforsearch}`);
 
           if (response.status === 200) {
+            setLazy(false);
             setUserPresent(true);
             console.log(response.data.responseData);
             setUserData(response.data.responseData);
@@ -246,78 +251,82 @@ const LaunchCampaign = () => {
       setPalletUniterr(false);
     }
 
-    if (hasError) {
-      setTimeout(() => {
-        setErrorCheck(false);
-        setBaseUniterr(false);
-        setCaseUniterr(false);
-        setPalletUniterr(false);
-      }, 2000);
-      return;
-    }
+    // if (hasError) {
+    //   setTimeout(() => {
+    //     setErrorCheck(false);
+    //     setBaseUniterr(false);
+    //     setCaseUniterr(false);
+    //     setPalletUniterr(false);
+    //   }, 2000);
+    //   return;
+    // }
 
-    const strimp = selectedCheckboxes.map((option) => option.name).join(", ");
+    if (!hasError) {
+      setLazy(true);
 
-    const getCookie = (name) => {
-      const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-      if (match) return match[2];
-      return null;
-    };
+      const strimp = selectedCheckboxes.map((option) => option.name).join(", ");
 
-    const userName = getCookie("username");
-    const userType = getCookie("usertype");
-    const userBucketPath = getCookie("userbucketpath");
-    const encryptedBucketPath = getCookie("encryptedbucketpath");
-    const finalResultBucketPath = getCookie("finalresultbucketpath");
-    const active = getCookie("active");
+      const getCookie = (name) => {
+        const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+        if (match) return match[2];
+        return null;
+      };
 
-    const loginResponseDTO = {
-      userName: userName,
-      userType: userType,
-      userBucketPath: userBucketPath,
-      encryptdBucketPath: encryptedBucketPath,
-      finalResultBucketPath: finalResultBucketPath,
-      active: active,
-    };
+      const userName = getCookie("username");
+      const userType = getCookie("usertype");
+      const userBucketPath = getCookie("userbucketpath");
+      const encryptedBucketPath = getCookie("encryptedbucketpath");
+      const finalResultBucketPath = getCookie("finalresultbucketpath");
+      const active = getCookie("active");
 
-    const campaignFileRequestDTO = {
-      campaignTypes: strimp,
-      productBaseUnitGTIN: baseunitGTIN,
-      productCaseGTIN: caseunitGTIN,
-      productPalletGTIN: palletunitGTIN,
-      productName: productNameCampaign,
-      globalProductClassification: gpcoption,
-      productSupplier: supplieroption,
-      lcaTerm: lcaoption,
-      location: daplocationoption,
-      calculationFramework: frameworkoption,
-      auditor: "Impact Buying",
-      assignedTo: supplieroption,
-    };
-    console.log(loginResponseDTO);
-    console.log(campaignFileRequestDTO);
-    console.log(imagefile);
+      const loginResponseDTO = {
+        userName: userName,
+        userType: userType,
+        userBucketPath: userBucketPath,
+        encryptdBucketPath: encryptedBucketPath,
+        finalResultBucketPath: finalResultBucketPath,
+        active: active,
+      };
 
-    const formData = new FormData();
-    formData.append("file", imagefile);
-    formData.append("campaignFileRequestDTO", new Blob([JSON.stringify(campaignFileRequestDTO)], { type: "application/json" }));
-    formData.append("loginResponseDTO", new Blob([JSON.stringify(loginResponseDTO)], { type: "application/json" }));
+      const campaignFileRequestDTO = {
+        campaignTypes: strimp,
+        productBaseUnitGTIN: baseunitGTIN,
+        productCaseGTIN: caseunitGTIN,
+        productPalletGTIN: palletunitGTIN,
+        productName: productNameCampaign,
+        globalProductClassification: gpcoption,
+        productSupplier: supplieroption,
+        lcaTerm: lcaoption,
+        location: daplocationoption,
+        calculationFramework: frameworkoption,
+        auditor: "Impact Buying",
+        assignedTo: supplieroption,
+      };
+      console.log(loginResponseDTO);
+      console.log(campaignFileRequestDTO);
+      console.log(imagefile);
 
-    try {
-      const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const formData = new FormData();
+      formData.append("file", imagefile);
+      formData.append("campaignFileRequestDTO", new Blob([JSON.stringify(campaignFileRequestDTO)], { type: "application/json" }));
+      formData.append("loginResponseDTO", new Blob([JSON.stringify(loginResponseDTO)], { type: "application/json" }));
 
-      if (response.status === 200) {
-        console.log(response);
-        document.cookie = `CampaignId=${response.data.responseData.id}; path=/`;
-        const imageBase64 = encodeURIComponent(response.data.responseData.imageData);
-        console.log(imageBase64);
-        sessionStorage.setItem("uploadedImageData", imageBase64);
-        navigate("/upload");
+      try {
+        const response = await axios.post("https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/campaign-file-service/api/v1/campaign/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (response.status === 200) {
+          console.log(response);
+          document.cookie = `CampaignId=${response.data.responseData.id}; path=/`;
+          const imageBase64 = encodeURIComponent(response.data.responseData.imageData);
+          console.log(imageBase64);
+          sessionStorage.setItem("uploadedImageData", imageBase64);
+          navigate("/upload");
+        }
+      } catch (error) {
+        console.error("Error submitting the form: ", error);
       }
-    } catch (error) {
-      console.error("Error submitting the form: ", error);
     }
   };
 
@@ -334,6 +343,7 @@ const LaunchCampaign = () => {
   };
 
   const completeEdit = async (event) => {
+    setLazy(true);
     event.preventDefault();
     const selectedCheckboxes = checkboxes.filter((checkbox) => checkbox.checked);
     const strimp = selectedCheckboxes.map((option) => option.name).join(", ");
@@ -355,6 +365,19 @@ const LaunchCampaign = () => {
     }
   };
 
+  const handleOpen = (e) => {
+    e.preventDefault();
+    setOpen((prev) => !prev);
+  };
+  if (lazy) {
+    return (
+      <>
+        <Header />
+        <Loading />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
@@ -370,10 +393,10 @@ const LaunchCampaign = () => {
                   </div>
                   <p className="mb-2 mt-4">Select Campaign*</p>
                   <div className="custom-dropdown">
-                    <button className="form-select mb-1 selectoption" style={{ textAlign: "left" }} type="button">
+                    <button className="form-select mb-1 selectoption" style={{ textAlign: "left" }} type="button" onClick={handleOpen}>
                       {selectedOption || "Product Carbon Footprint"}
                     </button>
-                    <div className="dropdown-content">
+                    <div className={`dropdown-content ${isopen ? "show" : ""}`}>
                       {campaignoptions.map((option) => (
                         <div key={option.id} className="dropdown-item">
                           <input className="form-check-input mgr" type="checkbox" checked={option.checked} onChange={() => handleCheckboxChange(option.id)} id={`checkbox-${option.id}`} />
@@ -506,6 +529,18 @@ const LaunchCampaign = () => {
                       </option>
                     ))}
                   </select>
+
+                  <p className="mb-2 mt-4">Select Calculation Framework*</p>
+                  <select value={isUserPresent ? userData.calculationFramework : frameworkoption} onChange={handleSelectFrameworks} className="form-select selectoption" required>
+                    <option value="" selected hidden>
+                      Calculation Framework
+                    </option>
+                    {options.map((option) => (
+                      <option key={option.id} value={option.name}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
@@ -538,8 +573,14 @@ const LaunchCampaign = () => {
                       )}
                       {!manufacturerData && (
                         <div className="mt-4 mb-4 mx-4">
-                          {!imagePreviewUrl && <input type="file" className="form-control tooltip-test" title="Please upload a Jpeg or Png file" id="file" accept=".jpg, .jpeg, .png" required onChange={handleImageChange} />}
+                          {!imagePreviewUrl && (
+                            <>
+                              <input type="file" className="form-control tooltip-test" title="Please upload a .jpeg or .png file" id="file" accept=".jpg, .jpeg, .png" required onChange={handleImageChange} />
+                              <p>*Please upload a .jpeg or .png file</p>
+                            </>
+                          )}
                           {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" className="img-fluid" />}
+
                           <br />
                         </div>
                       )}
@@ -564,9 +605,9 @@ const LaunchCampaign = () => {
             <div className="page-btn">
               <input type="submit" name="submit" value={isUserPresent ? "Save & Next" : "Next"} className="btn" />
             </div>
-            
           </div>
-        </form><div className="mt-4"></div>
+        </form>
+        <div className="mt-4"></div>
       </div>
     </>
   );
