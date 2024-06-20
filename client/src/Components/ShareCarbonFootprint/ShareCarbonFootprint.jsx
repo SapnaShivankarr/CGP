@@ -15,7 +15,7 @@ const Share = () => {
   const [shmarketplace, setShMarketPlace] = useState(true);
   const [campaignInfo, setCampaignInfo] = useState(null);
   const [lazy, setLazy] = useState(true);
-  const [emissionResult, setEmissionResult] = useState(null);
+  const [emissionResult, setEmissionResult] = useState(0);
   const defaultImage = "https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg?w=140&t=st=1718346796~exp=1718347396~hmac=e939e86149aef1f72f928bfd38f79f4d975bf060c59c6f5270579613219daa93";
 
   useEffect(() => {
@@ -35,9 +35,12 @@ const Share = () => {
         if (usertypeValue.toLowerCase() === "manufacturer") {
           const response1 = await axios.get(`http://localhost:9001/event-service/api/v1/event/manufacturer/${getfinalId}`);
           // const response2 = await axios.get(`http://localhost:9001/event-service/api/v1/bom/manufacturer/${getfinalId}`);
-          if (response1.data.responseStatus.responseCode === 0) {
-            const lastEvent = response1.data.responseData[0].componentusecategory === "Product" ? response1.data.responseData[0].lcaindicatorvalue : "";
-            const lastBOM = response1.data.responseData[1].componentusecategory === "Packaging" ? response1.data.responseData[1].lcaindicatorvalue : "";
+          if (response1.status === 200) {
+            const responseData = response1.data?.responseData;
+            const firstResponseData = responseData?.[0];
+            const secondResponseData = responseData?.[1];
+            const lastEvent = firstResponseData?.componentusecategory === "Product" ? firstResponseData?.lcaindicatorvalue : "";
+            const lastBOM = secondResponseData?.componentusecategory === "Packaging" ? secondResponseData?.lcaindicatorvalue : "";
             console.log(lastEvent);
             console.log(lastBOM);
             console.log(parseFloat(lastEvent) + parseFloat(lastBOM));
@@ -46,24 +49,27 @@ const Share = () => {
         } else {
           const response3 = await axios.get(`http://localhost:9001/event-service/api/v1/event/retailer/${getfinalId}`);
           if (response3.status === 200) {
-            const lastEvent = response3.data.responseData[0].lcaindicatorvalue ? response3.data.responseData[0].lcaindicatorvalue : "";
-            console.log(lastEvent);
+            const responseData = response3.data?.responseData;
+            const firstResponseData = responseData?.[0];
+            const lastEvent = firstResponseData?.lcaindicatorvalue;
+            console.log(parseInt(lastEvent));
             setEmissionResult(lastEvent);
           }
         }
 
         if (response.status === 200) {
-          setLazy(false);
           setCampaignInfo(response.data.responseData);
         } else {
           throw new Error(`Unexpected response status: ${response.status}`);
         }
       } catch (error) {
         console.error("Error fetching campaign data:", error);
+      } finally {
+        setLazy(false);
       }
     };
     fetchData();
-  }, []);
+  }, [emissionResult]);
 
   const handleCheckboxChange = (id) => {
     setCampaignRequestCheckboxes((prevCheckboxes) => prevCheckboxes.map((checkbox) => (checkbox.id === id ? { ...checkbox, checked: !checkbox.checked } : checkbox)));

@@ -9,21 +9,20 @@ body {
 }
 
 body::-webkit-scrollbar {
-  width: 25px; /* Width of the entire scrollbar */
+  width: 15px; /* Width of the entire scrollbar */
 }
 
 body::-webkit-scrollbar-track {
-  background: rgb(58, 167, 58); /* Color of the track */
+  background: rgb(253, 251, 251); /* Color of the track */
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #2aa15f; /* Color of the scrollbar handle */
-  border-radius: 30px; /* Roundness of the handle */
-  border: 5px solid rgb(167, 240, 57); /* Creates padding around the handle */
+  background-color: rgb(98, 96, 96); /* Color of the scrollbar handle */
+  border-radius: 20px; /* Roundness of the handle */
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background: green; /* Color of the handle on hover */
+  background: gray; /* Color of the handle on hover */
 }
 
 .header {
@@ -189,6 +188,8 @@ select[type="submit"]:hover,
   color: #fff;
   font-weight: 600;
   padding: 0.9rem;
+  width: 230px;
+  height: 150px;
 }
 
 .with-vertical-line {
@@ -219,4 +220,25 @@ select[type="submit"]:hover,
   .page-btn {
     width: 100%;
   }
+}
+
+@media (min-width: 360px) and (max-width: 767px) {
+  .logout-button {
+    padding: 4px 2px;
+    border-radius: 4px;
+  }
+  .username {
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 10px;
+    font-size: 10px;
+  }
+}
+
+pre {
+  white-space: unset !important;
 }

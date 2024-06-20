@@ -54,13 +54,6 @@ function Header() {
     <header className="header">
       <div className="app-name">Fractals</div>
       <div className="user-controls">
-        <button type="button" className="bg-btn" style={{ background: "unset", marginRight: "2rem" }} onClick={handleShowModal}>
-          Help
-        </button>
-
-        <CustomModal show={showModal} handleClose={handleCloseModal} title="Fractals Chatbot">
-          <p>...</p>
-        </CustomModal>
         <div className="username">{loggedInUser}</div>
         <button className="logout-button" onClick={handleLogout}>
           Logout

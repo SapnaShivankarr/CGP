@@ -48,3 +48,12 @@
 .shift-left {
   margin-right: 450px;
 }
+
+@media (min-width: 360px) and(max-width: 420px) {
+  .shift-left {
+    margin-right: 150px;
+  }
+  .custom-modal-overlay {
+    width: 150px;
+  }
+}

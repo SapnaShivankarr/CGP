@@ -240,13 +240,9 @@ const UploadDataScreen = () => {
                   <label className={`file-label ${RetailerUser ? "disable-btn-border" : "btn-border"}`}>
                     Distributed Bill of Materials (BOM)
                     <input type="file" accept=".xml" onChange={(e) => setBomFile(e.target.files[0])} style={{ display: "none" }} disabled={RetailerUser} />
-                    {RetailerUser ? (
-                      ""
-                    ) : (
-                      <div className="p-1 mt-1" style={{ backgroundColor: "lightgreen" }}>
-                        <FontAwesomeIcon icon={faFileUpload} size="2x" />
-                      </div>
-                    )}
+                    <div className="p-1 mt-1" style={{ backgroundColor: RetailerUser ? "gray" : "lightgreen" }}>
+                      <FontAwesomeIcon icon={faFileUpload} size="2x" />
+                    </div>
                   </label>
                 </div>
               </div>
@@ -256,22 +252,21 @@ const UploadDataScreen = () => {
                   <label className={`file-label ${eventUser ? "disable-btn-border" : "btn-border"}`}>
                     Own Events Emission
                     <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} disabled={eventUser} />
-                    {eventUser ? (
-                      ""
-                    ) : (
-                      <div className="p-1 mt-4" style={{ backgroundColor: "lightgreen" }}>
-                        <FontAwesomeIcon icon={faFileUpload} size="2x" />
-                      </div>
-                    )}
+                    <div className="p-1 mt-4" style={{ backgroundColor: eventUser ? "gray" : "lightgreen" }}>
+                      <FontAwesomeIcon icon={faFileUpload} size="2x" />
+                    </div>
                   </label>
                 </div>
               </div>
 
               <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${isDragging ? "dragging" : ""}`} onDrop={(e) => handleDrop(e, "pdf")} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave}>
                 <div className="box">
-                  <label className="file-label btn-border">
+                  <label className="file-label disable-btn-border">
                     Others
                     <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} disabled />
+                    <div className="p-1 mt-4" style={{ backgroundColor: "gray" }}>
+                      <FontAwesomeIcon icon={faFileUpload} size="2x" />
+                    </div>
                   </label>
                 </div>
               </div>
