@@ -37,16 +37,16 @@ const Share = () => {
           // const response2 = await axios.get(`http://localhost:9001/event-service/api/v1/bom/manufacturer/${getfinalId}`);
           if (response1.data.responseStatus.responseCode === 0) {
             const lastEvent = response1.data.responseData[0].componentusecategory === "Product" ? response1.data.responseData[0].lcaindicatorvalue : "";
-            const lastBOM = response1.data.responseData[1].componentusecategory === "Product" ? response1.data.responseData[1].lcaindicatorvalue : "";
+            const lastBOM = response1.data.responseData[1].componentusecategory === "Packaging" ? response1.data.responseData[1].lcaindicatorvalue : "";
             console.log(lastEvent);
             console.log(lastBOM);
             console.log(parseFloat(lastEvent) + parseFloat(lastBOM));
-            setEmissionResult(parseFloat(lastEvent) + parseFloat(lastBOM));
+            setEmissionResult(parseFloat((parseFloat(lastEvent) + parseFloat(lastBOM)).toFixed(3)));
           }
         } else {
           const response3 = await axios.get(`http://localhost:9001/event-service/api/v1/event/retailer/${getfinalId}`);
-          if (response3.data.responseStatus.responseCode === 0) {
-            const lastEvent = response3.data.responseData[response3.data.responseData.length - 1].lcaindicatorvalue;
+          if (response3.status === 200) {
+            const lastEvent = response3.data.responseData[0].lcaindicatorvalue ? response3.data.responseData[0].lcaindicatorvalue : "";
             console.log(lastEvent);
             setEmissionResult(lastEvent);
           }

@@ -8,6 +8,24 @@ body {
   background: #fff;
 }
 
+body::-webkit-scrollbar {
+  width: 25px; /* Width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+  background: rgb(58, 167, 58); /* Color of the track */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #2aa15f; /* Color of the scrollbar handle */
+  border-radius: 30px; /* Roundness of the handle */
+  border: 5px solid rgb(167, 240, 57); /* Creates padding around the handle */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: green; /* Color of the handle on hover */
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -125,6 +143,7 @@ select[type="submit"]:hover,
   font-weight: 600;
   cursor: pointer;
   width: 230px;
+  height: 150px;
 }
 
 /* .btn-border:hover {
@@ -194,4 +213,10 @@ select[type="submit"]:hover,
 .main-content {
   transition: transform 0.3s ease;
   z-index: 500;
+}
+
+@media (min-width: 360px) and (max-width: 767px) {
+  .page-btn {
+    width: 100%;
+  }
 }

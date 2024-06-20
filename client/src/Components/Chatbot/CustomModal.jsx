@@ -6,12 +6,11 @@ const CustomModal = ({ show, handleClose, title }) => {
     console.log(show);
     const chatshow = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("chatshow="));
     const chatvalue = chatshow ? chatshow.split("=")[1] : undefined;
-    if (chatvalue === "true") {
-      show = true;
-    }
+    const shouldShow = chatvalue === "true" || show;
+
     const mainContent = document.querySelector(".main-content");
     if (mainContent) {
-      if (show) {
+      if (shouldShow) {
         mainContent.classList.add("shift-left");
       } else {
         mainContent.classList.remove("shift-left");

@@ -3,6 +3,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 
@@ -14,7 +15,7 @@ const UploadDataScreen = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [RetailerUser, setRetailerUser] = useState(false);
-
+  const [isDragging, setIsDragging] = useState(false);
   const [userName, setUserName] = useState("");
   const [userType, setUserType] = useState("");
   const [userBucketPath, setUserBucketPath] = useState("");
@@ -37,11 +38,9 @@ const UploadDataScreen = () => {
     if (usertype.toLowerCase() === "retailer") {
       setRetailerUser(true);
     }
-    console.log(usertype);
     if (usertype.toLowerCase() === "manufacturer" && getCookieValue("manufactureevent")) {
       setEventUser(true);
     }
-
     if (usertype.toLowerCase() === "manufacturer" && getCookieValue("manufacturebom")) {
       setRetailerUser(true);
     }
@@ -51,7 +50,7 @@ const UploadDataScreen = () => {
     setEncryptdBucketPath(getCookieValue("encryptdBucketPath"));
     setFinalResultBucketPath(getCookieValue("finalResultBucketPath"));
     setActive(true);
-  }, []);
+  }, [eventFile, bomFile, pdfFile]);
 
   const handleUpload = async () => {
     if (!eventFile && !bomFile && !pdfFile) {
@@ -83,7 +82,6 @@ const UploadDataScreen = () => {
             },
           });
 
-          console.log(response);
           if (response.status === 200) {
             setSuccessMessage("BOM file uploaded successfully!");
             setErrorMessage("");
@@ -103,7 +101,6 @@ const UploadDataScreen = () => {
             },
           });
 
-          console.log(response);
           if (response.status === 200) {
             setSuccessMessage("Event file uploaded successfully!");
             setErrorMessage("");
@@ -127,7 +124,6 @@ const UploadDataScreen = () => {
             },
           });
 
-          console.log(response);
           if (response.status === 200) {
             setSuccessMessage("File uploaded successfully!");
             setErrorMessage("");
@@ -172,61 +168,110 @@ const UploadDataScreen = () => {
     }
   };
 
-  const displayFileName = (file, type) => (
-    <div>
-      {file ? (
-        <div>
-          <span>{file.name}</span>
-          <FontAwesomeIcon icon={faTimes} className="ml-2 text-danger" style={{ cursor: "pointer" }} onClick={(e) => removeFile(type, e)} />
-        </div>
-      ) : (
-        ""
-      )}
-    </div>
-  );
+  const displayFileName = (file, type) => {
+    return (
+      <div>
+        {file && (
+          <div>
+            <span>
+              {type.toUpperCase()}-{file.name}
+            </span>
+            <FontAwesomeIcon icon={faTimes} className="ml-2 text-danger" style={{ cursor: "pointer" }} onClick={(e) => removeFile(type, e)} />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e, type) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const droppedFile = e.dataTransfer.files[0];
+
+    if (!droppedFile) {
+      window.alert("No file dropped.");
+      return;
+    }
+
+    if (type === "bom") {
+      setBomFile(droppedFile);
+    } else if (type === "event") {
+      setEventFile(droppedFile);
+    } else {
+      setPdfFile(droppedFile);
+    }
+  };
 
   return (
     <>
       <Header />
-      <div className="container page-container">
+
+      <div className={`container page-container ${isDragging ? "dragging" : ""}`}>
         <div className="row">
           <div className="col-md-12">
             <div className="col-md-12">
               <h4 style={{ fontWeight: "700" }}>Upload data to your company vault</h4>
               <p>Data types</p>
-              {userType.toLowerCase() === "manufacturer" ? <p>You have to upload both BOM and Event File</p> : ""}
-              {
-                <p>
-                  Your CampaignId Id is <b>{campaignIdEntered}</b>.Please Upload your xml files with the Correct CampaignId{" "}
-                </p>
-              }
+              {userType.toLowerCase() === "manufacturer" && <p>You have to upload both BOM and Event File</p>}
+              <p>
+                Your CampaignId Id is <b>{campaignIdEntered}</b>.Please Upload your xml files with the Correct CampaignId
+              </p>
+              <p>You can either click & select or drag and drop your document one by one</p>
             </div>
 
             <div className="row below-section">
-              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2`}>
+              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${isDragging ? "dragging" : ""}`} onDrop={(e) => handleDrop(e, "bom")} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave}>
                 <div className={RetailerUser ? "boxpit" : "box"}>
-                  <label className={`file-label  ${RetailerUser ? "disable-btn-border" : "btn-border"}`}>
+                  <label className={`file-label ${RetailerUser ? "disable-btn-border" : "btn-border"}`}>
                     Distributed Bill of Materials (BOM)
                     <input type="file" accept=".xml" onChange={(e) => setBomFile(e.target.files[0])} style={{ display: "none" }} disabled={RetailerUser} />
-                    {/* {RetailerUser && <span>BOM File Upload disabled for Retailers</span>} */}
+                    {RetailerUser ? (
+                      ""
+                    ) : (
+                      <div className="p-1 mt-1" style={{ backgroundColor: "lightgreen" }}>
+                        <FontAwesomeIcon icon={faFileUpload} size="2x" />
+                      </div>
+                    )}
                   </label>
                 </div>
               </div>
 
-              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 `}>
+              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${isDragging ? "dragging" : ""}`} onDrop={(e) => handleDrop(e, "event")} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave}>
                 <div className={eventUser ? "boxpit" : "box"}>
                   <label className={`file-label ${eventUser ? "disable-btn-border" : "btn-border"}`}>
                     Own Events Emission
                     <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} disabled={eventUser} />
+                    {eventUser ? (
+                      ""
+                    ) : (
+                      <div className="p-1 mt-4" style={{ backgroundColor: "lightgreen" }}>
+                        <FontAwesomeIcon icon={faFileUpload} size="2x" />
+                      </div>
+                    )}
                   </label>
                 </div>
               </div>
 
-              <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2">
+              <div className={`col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 ${isDragging ? "dragging" : ""}`} onDrop={(e) => handleDrop(e, "pdf")} onDragOver={handleDragOver} onDragEnter={handleDragEnter} onDragLeave={handleDragLeave}>
                 <div className="box">
                   <label className="file-label btn-border">
                     Others
-                    <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} />
+                    <input type="file" accept=".xml" onChange={(e) => setEventFile(e.target.files[0])} style={{ display: "none" }} disabled />
                   </label>
                 </div>
               </div>
