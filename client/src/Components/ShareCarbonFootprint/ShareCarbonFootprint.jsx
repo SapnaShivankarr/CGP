@@ -33,7 +33,7 @@ const Share = () => {
         const usertypeValue = usertype ? usertype.split("=")[1] : "";
 
         if (usertypeValue.toLowerCase() === "manufacturer") {
-          const response1 = await axios.get(`http://localhost:9001/event-service/api/v1/event/manufacturer/${getfinalId}`);
+          const response1 = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/event-service/api/v1/event/manufacturer/${getfinalId}`);
           // const response2 = await axios.get(`http://localhost:9001/event-service/api/v1/bom/manufacturer/${getfinalId}`);
           if (response1.status === 200) {
             const responseData = response1.data?.responseData;
@@ -47,7 +47,7 @@ const Share = () => {
             setEmissionResult(parseFloat((parseFloat(lastEvent) + parseFloat(lastBOM)).toFixed(3)));
           }
         } else {
-          const response3 = await axios.get(`http://localhost:9001/event-service/api/v1/event/retailer/${getfinalId}`);
+          const response3 = await axios.get(`https://cpg-backend-service-k5atvf3ecq-ez.a.run.app/event-service/api/v1/event/retailer/${getfinalId}`);
           if (response3.status === 200) {
             const responseData = response3.data?.responseData;
             const firstResponseData = responseData?.[0];
