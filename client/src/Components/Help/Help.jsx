@@ -6,13 +6,13 @@ import CustomModal from "../Chatbot/CustomModal";
 
 const HelpButtonWithModal = () => {
   const [showModal, setShowModal] = useState(false);
-  // useEffect(() => {
-  //   const chatshow = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("chatshow="));
-  //   const chatvalue = chatshow ? chatshow.split("=")[1] : undefined;
-  //   if (chatvalue === "true") {
-  //     setShowModal(true);
-  //   }
-  // }, [showModal]);
+  useEffect(() => {
+    const chatshow = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("chatshow="));
+    const chatvalue = chatshow ? chatshow.split("=")[1] : undefined;
+    if (chatvalue === "true") {
+      setShowModal(true);
+    }
+  }, [showModal]);
 
   const handleShowModal = () => {
     setShowModal(true);
