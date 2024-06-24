@@ -73,7 +73,7 @@ const Login = () => {
         <div className="row">
           <div className="col-lg-6 col-12 col-left login-container">
             <div className="login-text">
-              <h2>Fractals</h2>
+              <h2 style={{color:"#fff"}}>Fractals</h2>
               <p>Sustainability data collaboration in the end-to-end consumer goods value chain!</p>{" "}
               <a href="/signup" className="btn">
                 Sign Up

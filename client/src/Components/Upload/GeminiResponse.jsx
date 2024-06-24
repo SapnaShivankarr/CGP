@@ -231,7 +231,7 @@ const GeminiResponse = () => {
                   <p>
                     <b>Sorry, your Data Uploaded does not contain the below fields. Please re-upload your file.</b>
                   </p>
-                  <div className="row with-vertical-line">
+                  <div className="row">
                     <div className="col-md-6">
                       <p>
                         <b>Below is the Data Available in the document:</b>
@@ -242,7 +242,7 @@ const GeminiResponse = () => {
                         ))}
                       </ul>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-6 setModuleheight">
                       <p>
                         <b>Data Not Available in the document:</b>
                       </p>

@@ -218,20 +218,20 @@ const UploadDataScreen = () => {
   };
 
   return (
-    <>
+    <div className="no-scroll">
       <Header />
 
       <div className={`container page-container ${isDragging ? "dragging" : ""}`}>
         <div className="row">
           <div className="col-md-12">
             <div className="col-md-12">
-              <h4 style={{ fontWeight: "700" }}>Upload data to your company vault</h4>
-              <p>Data types</p>
+              <h4 style={{ fontWeight: "700" }} className="mb-4">Upload data to your company vault</h4>
+              {/* <p>Data types</p> */}
               {userType.toLowerCase() === "manufacturer" && <p>You have to upload both BOM and Event File</p>}
-              <p>
+              <span>
                 Your CampaignId Id is <b>{campaignIdEntered}</b>.Please Upload your xml files with the Correct CampaignId
-              </p>
-              <p>You can either click & select or drag and drop your document one by one</p>
+              </span>
+              <div><span>You can either click & select or drag and drop your document one by one</span></div>
             </div>
 
             <div className="row below-section">
@@ -294,7 +294,7 @@ const UploadDataScreen = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

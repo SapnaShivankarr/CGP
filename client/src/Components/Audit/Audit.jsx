@@ -44,7 +44,7 @@ const Select = () => {
   };
 
   return (
-    <>
+    <div className="no-scroll">
     <Header />
     <div className="container page-container">
       <h4 style={{fontWeight:'700'}}>Request for Audit</h4>
@@ -64,28 +64,28 @@ const Select = () => {
             <p>
               <strong>Selected Frameworks:</strong> CO2 emission calculation for <span className="highlighted">Product Carbon Footprint-GHGP (Scope 1-3)</span>
             </p>
-            <div className="row below-section">
-              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2 my-2" style={{width:'100%'}}>
-                <div className="boxing" onClick={() => navigate("/audit")}>
-                  Review Campaign for CO2 emission calculation
-                </div>
-              </div>
-              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2 my-2" style={{width:'100%'}}>
-                <div className="boxing" onClick={() => navigate("/audit")}>
-                  Verify Deforestation Certification
-                </div>
-              </div>
-              <div className="col-12 col-lg-4 btn-border d-flex justify-content-center align-items-center text-center p-2 my-2" style={{width:'100%'}}>
-                <div className="boxing" onClick={() => navigate("/audit")}>
-                  Validate Human Rights & Living Wages Compliance
-                </div>
-              </div>
-            </div>
+            <div className="row">
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'100%',margin:'0'}}>
+            <button className="box btn w-100" onClick={() => navigate("/audit")}>
+            Review Campaign for CO2 emission calculation
+            </button>
+          </div>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'100%',margin:'0'}}>
+            <button className="box btn w-100" onClick={() => navigate("/audit")}>
+            Verify Deforestation Certification
+            </button>
+          </div>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{width:'100%',margin:'0'}}>
+            <button className="box btn w-100" onClick={() => navigate("/audit")}>
+            Validate Human Rights & Living Wages Compliance
+            </button>
+          </div>
+        </div>
           </div>
         </div>
         <div className="col-md-6">
           <div className="setModuleHeight setModuleheight">
-            <div className="bg-white p-4 rounded text-left">
+            <div className="rounded text-left">
               <p className="font-weight-bold mb-3">
                 <b>Module</b>
                 <span className="link-click-pst">imde.io</span>
@@ -118,7 +118,7 @@ const Select = () => {
         </div>
       </div>
     </div>
-        </>
+        </div>
   );
 };
 

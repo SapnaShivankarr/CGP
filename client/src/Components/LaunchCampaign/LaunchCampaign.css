@@ -46,6 +46,7 @@
 .setModuleheight {
   background: #eaeff44f;
   border-left: 2px dotted #2aa15f;
+  padding: 10px;
 }
 
 .form-check-input {

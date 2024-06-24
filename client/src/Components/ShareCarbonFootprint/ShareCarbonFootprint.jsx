@@ -93,56 +93,58 @@ const Share = () => {
   }
 
   return (
-    <>
+    <div className="no-scroll">
       <Header />
       <div className="container page-container">
         <h4 style={{ fontWeight: "700" }}>Share calculated data</h4>
-        <p className="font-weight-bold mb-3">Choose where to share data</p>
+        <span className="font-weight-bold mb-3">Choose where to share data</span>
         <div className="row">
           <div className="col-md-4">
-            <div className="bg-white mb-3 rounded text-left">
+            <div className="mb-3 rounded text-left">
               <div className="mb-4 p-2">
                 <img src={campaignInfo && campaignInfo.imageData ? `data:image/jpg;base64,${campaignInfo.imageData}` : defaultImage} alt="Manufacturer Logo" style={{ width: "200px" }} className="mb-3" />
-                <p className="mt-2">
+                <div><span className="mt-2">
                   <b>Campaign ID:</b> {campaignInfo ? `${campaignInfo.id}` : "Default Id"}
-                </p>
-                <p className="mt-2">
+                </span></div>
+                <div><span className="mt-2">
                   <b>Product:</b> {campaignInfo ? `${campaignInfo.productName}` : "Default Id"}
-                </p>
-                <p>Results</p>
-                <p className="mt-2">
+                </span></div>
+                <div><span>Results</span></div>
+                <div><span className="mt-2">
                   <b>{emissionResult ? emissionResult : ""} kg CO2e/kg</b> (GHCP)
-                </p>
-                <p>
-                  Supply Chain <a href="https://google.com"> Map</a>
-                </p>
-                <a href="https://google.com">Auditor Attestation </a>
+                </span></div>
+
               </div>
             </div>
           </div>
           <div className="col-md-8">
             <div className="setModule setModuleheight">
-              <div className="bg-white p-4 rounded text-left">
-                <p className="font-weight-bold mb-3 linkclick">
+              <div className="p-4 rounded text-left">
+                <div><span>
+                  Supply Chain <a href="https://google.com"> Map</a>
+                </span></div>
+                <div> <a href="https://google.com">Auditor Attestation </a></div>
+                <div> <span className="font-weight-bold linkclick">
                   <b>Company Data Vault</b>
-                </p>
-                <p className="font-weight-bold mb-3 mx-4">
+                </span></div>
+                <div> <span className="font-weight-bold">
                   Zwanenberg_Fractals<span className="urlcheck">url:19xcf.fractals</span>
-                </p>
-                <div className="d-flex justify-content-between mx-4 mb-3">
+                </span></div>
+                <div className="d-flex justify-content-between">
                   <label htmlFor="alcd">Allow others to calculate on this data?</label>
                   <input className="form-check-input" type="checkbox" checked={alcal} onChange={handleCheckboxCal} id="alcd" />
                 </div>
-
-                <p className="font-weight-bold mb-1 linkclick">
-                  <b>External</b>
-                </p>
-                <p className="font-weight-bold mb-3 mx-4">
+                <div>
+                  <span className="font-weight-bold linkclick">
+                    <b>External</b>
+                  </span>
+                </div>
+                <div className="font-weight-bold">
                   Campaign Requests
-                  <ul>
+                  <ul style={{ marginBottom: "0" }}>
                     {campaignRequestCheckboxes.map((checkbox) => (
                       <li key={checkbox.id}>
-                        <div className="d-flex justify-content-between mb-3 ml-0">
+                        <div className="d-flex justify-content-between ml-0">
                           <label className="form-check-label" htmlFor={`checkbox-${checkbox.id}`}>
                             ID: <b>{checkbox.id}</b> {checkbox.name} {checkbox.parameters}
                           </label>
@@ -150,12 +152,11 @@ const Share = () => {
                         </div>
                       </li>
                     ))}
-                  </ul>
-                </p>
-                <p className="font-weight-bold mb-3 linkclickpd mx-3">
+                  </ul></div>
+                <div> <span className="font-weight-bold linkclick">
                   <b>Product Data Marketplace</b>
-                </p>
-                <div className="d-flex justify-content-between mx-4">
+                </span></div>
+                <div className="d-flex justify-content-between">
                   <label htmlFor="shmp">Allow others to calculate on this data?</label>
                   <input className="form-check-input" type="checkbox" checked={shmarketplace} onChange={handleCheckboxshmp} id="shmp" />
                 </div>
@@ -163,13 +164,19 @@ const Share = () => {
             </div>
           </div>
         </div>
-        <div className="back-btn">
-          <button className="btn fractals-btn btn-lg w-100 mt-4" onClick={() => navigate(-1)}>
-            Back
+        <div className="page-btn">
+          <button className="btn me-2">
+            Share
           </button>
         </div>
+          <div className="col-md-12 page-btn" style={{float:"left"}}>
+            <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+              Back
+            </button>
+        
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

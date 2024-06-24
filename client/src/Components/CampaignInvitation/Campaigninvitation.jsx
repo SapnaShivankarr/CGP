@@ -50,7 +50,7 @@ const ActionsScreen = () => {
   }
 
   return (
-    <>
+    <div className="no-scroll">
       <Header />
       <div className="container page-container">
         <h4 style={{ fontWeight: "700" }}>Campaign Invitation</h4>
@@ -74,24 +74,24 @@ const ActionsScreen = () => {
         </p>
 
         <div className="row below-section">
-          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{ width: "250px" }}>
-            <div className="box btn w-100" onClick={() => goToPage("/review")}>
-              Review Campaign
-            </div>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn">
+            <button className="box btn w-100" onClick={() => goToPage("/review")}>
+              Review the Campaign in Detail
+            </button>
           </div>
-          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{ width: "250px" }}>
-            <div className="box btn w-100" onClick={() => goToPage("/upload")}>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn">
+            <button className="box btn w-100" onClick={() => goToPage("/upload")}>
               Upload Data to Your Company Vault
-            </div>
+            </button>
           </div>
-          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn" style={{ width: "250px" }}>
-            <div className="box btn w-100" onClick={() => goToPage("/share")}>
+          <div className="col-12 col-lg-3 d-flex justify-content-center align-items-center text-center p-2 page-btn">
+            <button className="box btn w-100" onClick={() => goToPage("/share")}>
               Share Campaign with Suppliers
-            </div>
+            </button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

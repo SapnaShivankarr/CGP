@@ -9,7 +9,7 @@ body {
 }
 
 body::-webkit-scrollbar {
-  width: 15px; /* Width of the entire scrollbar */
+  width: 8px; /* Width of the entire scrollbar */
 }
 
 body::-webkit-scrollbar-track {
@@ -17,14 +17,17 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: rgb(98, 96, 96); /* Color of the scrollbar handle */
+  background-color: #ccc; /* Color of the scrollbar handle */
   border-radius: 20px; /* Roundness of the handle */
 }
 
 body::-webkit-scrollbar-thumb:hover {
   background: gray; /* Color of the handle on hover */
 }
-
+.no-scroll {
+  height: 100vh;
+  overflow-y: hidden;
+}
 .header {
   display: flex;
   justify-content: space-between;
@@ -61,11 +64,15 @@ body::-webkit-scrollbar-thumb:hover {
 }
 .page-container {
   margin: 2rem auto;
-  padding: 3rem 5rem 3rem;
+  padding: 0 5rem 0;
   background: #fff;
-  box-shadow: 0 0 5px #999999;
+  /* box-shadow: 0 0 5px #999999; */
 }
-
+.detailsinvite {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .btn,
 .bg-btn {
   display: inline-block;
@@ -154,7 +161,7 @@ select[type="submit"]:hover,
 } */
 
 .below-section {
-  margin: 1rem 0;
+  margin: 3rem 0;
   display: flex;
   justify-content: space-between;
 }
@@ -163,7 +170,7 @@ select[type="submit"]:hover,
   margin-top: 0px;
 }
 .page-btn {
-  width: 200px;
+  width: 250px;
   float: right;
   margin: 0 0 2rem 0;
 }
@@ -180,7 +187,12 @@ select[type="submit"]:hover,
   background: #ddd;
   color: #a79191c4;
 } */
-
+.details p {
+  margin: 3px;
+}
+.details span {
+  /* font-weight: 600; */
+}
 .disable-btn-border {
   border: 3px solid #ddd;
   border-radius: 10px;
@@ -191,31 +203,14 @@ select[type="submit"]:hover,
   width: 230px;
   height: 150px;
 }
-
-.with-vertical-line {
-  display: flex;
-}
-
-.with-vertical-line .col-md-6 {
-  position: relative;
-  width: 50%;
-}
-
-.with-vertical-line .col-md-6:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 2px;
-  background: #000;
-}
-
 .main-content {
   transition: transform 0.3s ease;
   z-index: 500;
 }
-
+.custom-calculated-results {
+  padding: 3rem;
+  border: 10px double #aaa;
+}
 @media (min-width: 360px) and (max-width: 767px) {
   .page-btn {
     width: 100%;
