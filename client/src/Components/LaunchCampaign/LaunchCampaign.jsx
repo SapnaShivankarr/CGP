@@ -588,7 +588,18 @@ const LaunchCampaign = () => {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <p className="mb-2">Choose Auditor*</p>
+                  <p className="mb-2 mt-4">Locations*</p>
+                  <select value={isUserPresent ? userData.location : daplocationoption} onChange={handleSelectLocation} className="form-select selectoption" required>
+                    <option value="" selected hidden>
+                      DAP Locations
+                    </option>
+                    {dapLocations.map((option) => (
+                      <option key={option.id} value={option.City}>
+                        {option.Country + "-" + option.City}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mb-2 mt-4">Choose Auditor*</p>
                   <select className="form-select pname" value={isUserPresent ? userData.auditor : "Impact Buying"} required>
                     <option value="" selected hidden>
                       Select an Option

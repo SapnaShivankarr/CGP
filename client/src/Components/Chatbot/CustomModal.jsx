@@ -7,15 +7,6 @@ const CustomModal = ({ show, handleClose, title }) => {
     const chatshow = document.cookie.split(";").find((cookie) => cookie.trim().startsWith("chatshow="));
     const chatvalue = chatshow ? chatshow.split("=")[1] : undefined;
     const shouldShow = chatvalue === "true" || show;
-
-    const mainContent = document.querySelector(".main-content");
-    if (mainContent) {
-      if (shouldShow) {
-        mainContent.classList.add("shift-left");
-      } else {
-        mainContent.classList.remove("shift-left");
-      }
-    }
   }, [show]);
 
   if (!show) {
@@ -23,15 +14,15 @@ const CustomModal = ({ show, handleClose, title }) => {
   }
 
   return (
-    <div className={`custom-modal-overlay ${show ? "show" : ""}`}>
-      <div className="custom-modal">
-        <div className="custom-modal-header">
-          <h5 style={{ color: "black" }}>{title}</h5>
+    <div className={`modal-overlay ${show ? "show" : ""}`}>
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">{title}</h5>
           <button type="button" className="close" onClick={handleClose}>
             &times;
           </button>
         </div>
-        <div className="custom-modal-body">
+        <div className="modal-body">
           <iframe src="https://chatui-k5atvf3ecq-ez.a.run.app/" title="Chatbot" width="100%" height="450px"></iframe>
         </div>
       </div>

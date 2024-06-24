@@ -215,9 +215,9 @@ select[type="submit"]:hover,
   .page-btn {
     width: 100%;
   }
-}
-
-@media (min-width: 360px) and (max-width: 767px) {
+  .no-scroll {
+    overflow-y: scroll;
+  }
   .logout-button {
     padding: 4px 2px;
     border-radius: 4px;
@@ -225,9 +225,6 @@ select[type="submit"]:hover,
   .username {
     margin-right: 8px;
   }
-}
-
-@media (max-width: 768px) {
   .page-container {
     padding: 10px;
     font-size: 10px;

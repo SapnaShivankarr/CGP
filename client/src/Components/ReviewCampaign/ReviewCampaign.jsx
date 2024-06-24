@@ -51,18 +51,20 @@ function Upload() {
     <div className="no-scroll">
       <Header />
       <div className="container page-container">
-      <h4 style={{ fontWeight: "700" }}>Campaign Review</h4>
+        <h4 style={{ fontWeight: "700" }}>Campaign Review</h4>
         <div className="row mt-4">
-          <div className="detailsinvite col-4">
+          <div className="detailsinvite col-md-4 col-12">
             <div style={{ width: "250px", height: "auto" }}>{userName?.imageData && <img style={{ width: "100%", height: "100" }} src={`data:image/jpeg;base64,${userName.imageData}`} className="invite" alt="Campaign Invitation" />}</div>
           </div>
-          <div className="details setModuleheight col-8">
-            <h5 style={{ fontWeight: "700" }} className="mb-2">{userName.productName || "Loading..."}</h5>
+          <div className="details setModuleheight col-md-8 col-12">
+            <h5 style={{ fontWeight: "700" }} className="mb-2">
+              {userName.productName || "Loading..."}
+            </h5>
             <p className="my-1">
               <span>Campaign id - </span> {userName.id || "Loading..."}
             </p>
             <p className="detailpara">
-              <span>Selected campaign  - </span> {userName.campaignTypes || "Loading..."}
+              <span>Selected campaign - </span> {userName.campaignTypes || "Loading..."}
             </p>
             <p>
               <span>Product base unit GTIN - </span> {userName.productBaseUnitGTIN || "Loading..."}

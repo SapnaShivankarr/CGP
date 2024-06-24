@@ -16,6 +16,7 @@ import HelpButtonWithModal from "./Components/Help/Help";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuditor, setAuditor] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,6 +26,13 @@ function App() {
 
     if (isLoggedIn && isLoggedIn.split("=")[1] === "true") {
       setIsAuthenticated(true);
+      const usertype = document.cookie
+        .split(";")
+        .find((cookie) => cookie.trim().startsWith("usertype="))
+        .split("=")[1];
+      if (usertype.toLowerCase() === "auditor") {
+        setAuditor(true);
+      }
     } else if (location.pathname !== "/" && location.pathname !== "/signup") {
       navigate("/");
     }
@@ -45,13 +53,17 @@ function App() {
               <Route path="/invitation" element={<Campaigninvitation />} />
               <Route path="/review" element={<ReviewCampaign />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/audit" element={<Audit />} />
               <Route path="/response" element={<GeminiResponse />} />
+            </>
+          )}
+          {isAuditor && (
+            <>
+              <Route path="/audit" element={<Audit />} />
             </>
           )}
         </Routes>
       </div>
-      <HelpButtonWithModal />
+      {location.pathname !== "/" && location.pathname !== "/signup" && <HelpButtonWithModal />}
     </div>
   );
 }
